@@ -1,6 +1,6 @@
 package com.frandler.vue;
 
-import java.util.InputMismatchException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
@@ -15,79 +15,86 @@ public class TaskView {
 
 //-----------------------------------------------------------------------------------------	
 	public void addTask() {
-		String taskString ="";
-		System.out.print("------------------------------------------\nAdd new task :  ");
-		taskString = mscanner.nextLine();
-		var res = tskController.addTask(taskString);
-		if(res!="") 
-			System.err.println(res);
-		
+	    ArrayList<String> completeNameArrayList = new ArrayList<>();
+	    int nbPeople;
+	    String taskString = "";
+	    String completeNameString = "";
+	    int duration;
+	    
+	    System.out.println("\n==== (+) NEW TASK ====\n");
+	    System.out.print("New task : ");
+	    taskString = mscanner.nextLine();
+
+	    System.out.println("How much workers on task (" + taskString + ")?");
+	    nbPeople = mscanner.nextInt();
+	    mscanner.nextLine(); 
+	    
+	    while (nbPeople <= 0) {
+	    	System.err.println("Error! Invalid number - Try again:");
+	    	nbPeople = mscanner.nextInt();
+		    mscanner.nextLine(); 
+		}
+		for (int i = 0; i < nbPeople; i++) {
+	        System.out.print("------------------------------------------\nWorker(" + (i+1) + ") - Complete name: ");
+	        completeNameString = mscanner.nextLine();
+	        completeNameArrayList.add(completeNameString);
+		}
+	    
+	    System.out.println("Duration task - " + taskString + " in minute ?");
+	    duration = mscanner.nextInt();
+	    mscanner.nextLine();
+
+	    var res = tskController.addTask(completeNameArrayList, taskString, duration);
+	    if (!res.isEmpty()) {
+	        System.err.println(res);
+	    }
 	}
+
 
 //-----------------------------------------------------------------------------------------	
 	public void getTasks() {
-		System.out.println(tskController.getTasks());
+		System.out.println("\n==== TASK LIST====\n" + tskController.getTasks());
 	}
 
 //-----------------------------------------------------------------------------------------	
-	public void getTaskbyId() {
-	    try {
-	        System.out.print("------------------------------------------\nPlease enter ID of task : ");
-	        int idTaskInt = mscanner.nextInt();
-	        
-	        String tmpString = String.valueOf(idTaskInt);
-	    	
-	    	while (tmpString.length() > 3) {
-	    	    System.out.println("ID must contain at least 3 characters\nTry again:");
-	    	    idTaskInt = mscanner.nextInt();
-	    	    
-	    	    mscanner.nextLine(); 
-	    	    tmpString = String.valueOf(idTaskInt); // on met à jour pour re-tester
-	    	}
-	    	
-	        String task = tskController.getTaskById(idTaskInt);
-	        System.out.println("Task ("+ idTaskInt+ "): " + task);
-	    } catch (InputMismatchException e) {
-	        System.err.println("❌ ID task should be a number");
-	        mscanner.nextLine(); 
-	    }
-	}
+//	public void getTaskbyId() {
+//	    try {
+//	        System.out.print("------------------------------------------\nPlease enter ID of task : ");
+//	        int idTaskInt = mscanner.nextInt();	    
+//	    	mscanner.nextLine(); 
+//
+//	    	String task = tskController.getTaskById(idTaskInt);
+//	        System.out.println("Task ("+ idTaskInt+ "): " + task);
+//	    } catch (InputMismatchException e) {
+//	        System.err.println("❌ ID task should be a number");
+//	        mscanner.nextLine(); 
+//	    }
+//	}
 	
 //-----------------------------------------------------------------------------------------
-	public void removeTaskById() {
-		int idTaskInt = -1;
-		boolean delete = true;
-		
-		try {
-			System.out.print("------------------------------------------\nPlease enter ID of task : ");
-			idTaskInt = mscanner.nextInt();
-			
-			String taskString = tskController.getTaskById(idTaskInt);
-			String tmpString = String.valueOf(idTaskInt);
-	    	
-	    	while (tmpString.length() > 3) {
-	    	    System.out.println("** At least 3 characters required - \nTry again:");
-	    	    idTaskInt = mscanner.nextInt();
-	    	    
-	    	    mscanner.nextLine(); 
-	    	    tmpString = String.valueOf(idTaskInt); // mise a jour pour re-tester
-	    	}
-	    	
-			var err = tskController.removeTaskById(idTaskInt); 
-			if (err != "") {
-				System.err.println(err);
-				delete = false;
-			}
-
-			if (delete)
-				System.out.println("Task "+ "< " + taskString + " >" + " has been deleted succesfully");
-
-		} catch (InputMismatchException e) {
-			System.err.println("ID task should be a number");
-			mscanner.nextLine();
-		}
-		
-	}
+//	public void removeTaskById() {
+//		int idTaskInt = -1;
+//		boolean delete = true;
+//		
+//		try {
+//			System.out.print("------------------------------------------\nPlease enter ID of task : ");
+//			idTaskInt = mscanner.nextInt();
+//	    	
+//			var err = tskController.removeTaskById(idTaskInt); 
+//			if (err != "") {
+//				System.err.println(err);
+//				delete = false;
+//			}
+//
+//			if (delete)
+//				System.out.println("Task "+ "< " + idTaskInt + " >" + " has been deleted succesfully");
+//
+//		} catch (InputMismatchException e) {
+//			System.err.println("ID task should be a number");
+//			mscanner.nextLine();
+//		}
+//		
+//	}
 
 //-----------------------------------------------------------------------------------------	
 	public void getMenu() {
@@ -98,11 +105,11 @@ public class TaskView {
     	  while (running) {
               try {
             	  System.out.println("\n=== TASK MANAGEMENT ===");
-                  System.out.println("1. Add Task");
-                  System.out.println("2. List all Tasks");
-                  System.out.println("3. List task by ID");
-                  System.out.println("4. Delete Task");
-                  System.out.println("5. Leave");
+                  System.out.println("1. (+) NEW Task");
+                  System.out.println("2. LIST ALL Tasks");
+                  System.out.println("3. LIST TASK BY ID");
+                  System.out.println("4. DELETE Task");
+                  System.out.println("5. LEAVE");
                   System.out.print("Your Choice : ");
                   
                   choice = mscanner.nextInt();
@@ -116,10 +123,10 @@ public class TaskView {
                       	getTasks();
                           break;
                       case 3:
-                    	  getTaskbyId();
+                    	  //getTaskbyId();
                             break;
                       case 4:
-                    	  removeTaskById();
+                    	  //removeTaskById();
                     	  break;
                       case 5:
                           running = false;
