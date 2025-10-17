@@ -1,5 +1,6 @@
 package com.frandler.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.frandler.model.TaskModel;
@@ -13,7 +14,7 @@ public class TaskController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration) {
+	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration, String startAt) {
 	        String errorString = "";
 	        String tmpTaskString = task.trim();
 	 
@@ -21,7 +22,7 @@ public class TaskController {
 				errorString= "No task added....";
 			}
 	        
-	        tskmodel.addTask(completeNameArrayList, task, duration);
+	        tskmodel.addTask(completeNameArrayList, task, duration, startAt);
 	        return errorString;
 	        
 	    }

@@ -1,5 +1,7 @@
 package com.frandler.model;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import com.frandler.tache.Task;
@@ -11,14 +13,15 @@ public class TaskModel{
 	int compt = 1;
 	ArrayList<Task> mastesTaskList = new ArrayList<Task>();
 	
-	public int addTask(ArrayList<String> assignedTo, String taskString, int duration) {
+	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
 		int newId = compt++;
-        Task newTask = new Task(newId, assignedTo, taskString, duration);
+        Task newTask = new Task(newId, assignedTo, taskString, duration, startAt);
         mastesTaskList.add(newTask);
         
         return newId++;
     }
-	
+
+	//------------------------------------------------------------------------------------------
 	private String formatDuration(int duration) {
 	    int days = duration / (60 * 24);
 	    int hours = (duration % (60 * 24)) / 60;
@@ -39,13 +42,19 @@ public class TaskModel{
 	    return result.toString();
 	}
 
+	//---------------------------------------------------------------------------------------------
 	public String getTasks() {
     	String stringbuilder = "";
+    	String patternString = "yyyy-MM-dd HH:mm";
+ 	    
+ 	    DateTimeFormatter Dateformatter = DateTimeFormatter.ofPattern(patternString);
+ 	   
     	
     	for (Task t : mastesTaskList) {
     		
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
+    		LocalDateTime startDate = LocalDateTime.parse(t.getStartDate(), Dateformatter);
     		
 			for(int i = 0; i < assignedTo.size(); i++) {
 				workersString += assignedTo.get(i);
@@ -55,8 +64,10 @@ public class TaskModel{
 			}
 			stringbuilder +=" ID_task: " + t.getId() +
     	    		"\n Task: " + t.getTaskString() +
-    	    		"\n Worker(s): " + workersString +
-    	    		"\n Duration: " + formatDuration(t.getDuree()) + "\n";
+    	    		"\n Assigned to: " + workersString +
+    	    		"\n Duration: " + formatDuration(t.getDuree()) +
+    	    		"\n Start date: " + startDate + "\n";
+			
 			stringbuilder += "-----------------------------------------------------------------\n";
     	}
     	

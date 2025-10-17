@@ -1,5 +1,7 @@
 package com.frandler.vue;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,8 +22,10 @@ public class TaskView {
 	    String taskString = "";
 	    String completeNameString = "";
 	    int duration;
+	    String startAt = null;
+	   
 	    
-	    System.out.println("\n==== (+) NEW TASK ====\n");
+	    System.out.println("\n==== (+) NEW TASK ====");
 	    System.out.print("New task : ");
 	    taskString = mscanner.nextLine();
 
@@ -43,8 +47,11 @@ public class TaskView {
 	    System.out.println("Duration task - " + taskString + " in minute ?");
 	    duration = mscanner.nextInt();
 	    mscanner.nextLine();
+	    
+	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
+	    startAt = mscanner.nextLine();
 
-	    var res = tskController.addTask(completeNameArrayList, taskString, duration);
+	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
 	    }
