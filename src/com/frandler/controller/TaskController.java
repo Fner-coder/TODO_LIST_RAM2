@@ -1,6 +1,5 @@
 package com.frandler.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import com.frandler.model.TaskModel;
@@ -17,10 +16,27 @@ public class TaskController {
 	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration, String startAt) {
 	        String errorString = "";
 	        String tmpTaskString = task.trim();
-	 
-			if (tmpTaskString == null) {
-				errorString= "No task added....";
+	        
+			if (tmpTaskString.isEmpty()) {
+				//errorString = "Error ! No task added.... Try again";
+				//return errorString;
+				return "Error ! No task added.... Try again";
 			}
+//			else{
+			if (completeNameArrayList.isEmpty()) {
+//				errorString = "Error ! No worker(s) assigned to this task....Try again";
+//				return errorString;
+				return "Error ! No worker(s) assigned to this task....Try again";
+			}
+//			}
+			
+//			================================================
+		    for (String name : completeNameArrayList) {
+		        if (name == null || name.trim().isEmpty()) {
+		            return "Error ! All workers must have a complete name....Try again";
+		        }
+		    }
+//			================================================
 	        
 	        tskmodel.addTask(completeNameArrayList, task, duration, startAt);
 	        return errorString;

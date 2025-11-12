@@ -14,18 +14,18 @@ public class Task {
 //    private String taskDescriptionString;
 //    LocalDateTime fin = LocalDateTime.now();
     
-//	public enum Priority {
-//	    HIGH,   
-//	    MEDIUM, 
-//	    LOW     
-//	}
-//	
-	public enum TaskStatus {
-	    To_do,
-	    In_progress,  
-	    Terminate,
-	    Done
+	public enum Priority {
+	    HIGH,   
+	    MEDIUM, 
+	    LOW     
 	}
+//	
+//	public enum TaskStatus {
+//	    To_do,
+//	    In_progress,  
+//	    Terminate,
+//	    Done
+//	}
 
 
 

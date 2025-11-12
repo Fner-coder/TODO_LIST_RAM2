@@ -1,5 +1,6 @@
 package com.frandler.vue;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -37,20 +38,38 @@ public class TaskView {
 	    	System.err.println("Error! Invalid number - Try again:");
 	    	nbPeople = mscanner.nextInt();
 		    mscanner.nextLine(); 
-		}
-		for (int i = 0; i < nbPeople; i++) {
-	        System.out.print("------------------------------------------\nWorker(" + (i+1) + ") - Complete name: ");
-	        completeNameString = mscanner.nextLine();
-	        completeNameArrayList.add(completeNameString);
+		}	    
+//		for (int i = 0; i < nbPeople; i++) {
+//	        System.out.print("------------------------------------------\nWorker(" + (i+1) + ") - Complete name: ");
+//	        completeNameString = mscanner.nextLine();
+//	        completeNameArrayList.add(completeNameString);
+//		}
+	    
+	    for (int i = 0; i < nbPeople; i++) {
+	    	boolean validName = false;
+	    	
+	    	while (!validName) {
+	    		System.out.print("-------------------------------\nWorker(" + (i+1) + ") - Complete name: ");
+	    		completeNameString = mscanner.nextLine().trim();
+	    		
+	    		if (completeNameString.isEmpty()) {
+	                System.err.println("Error ! Name cannot be empty.\nPlease try again.");
+	            } else {
+	                validName = true;
+	                completeNameArrayList.add(completeNameString);
+	            }
+	    	}
 		}
 	    
 	    System.out.println("Duration task - " + taskString + " in minute ?");
 	    duration = mscanner.nextInt();
+//	    Duration duration;
 	    mscanner.nextLine();
 	    
 	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
 	    startAt = mscanner.nextLine();
-
+	    
+//	    LocalDateTime endDate = startAt.plus(duration);
 	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
