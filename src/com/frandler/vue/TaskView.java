@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
@@ -63,7 +64,6 @@ public class TaskView {
 	    
 	    System.out.println("Duration task - " + taskString + " in minute ?");
 	    duration = mscanner.nextInt();
-//	    Duration duration;
 	    mscanner.nextLine();
 	    
 	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
@@ -146,7 +146,11 @@ public class TaskView {
                       	addTask();
                           break;
                       case 2:
-                      	getTasks();
+                    	  try {
+                              getTasks();
+                          } catch (Exception e) {
+                              System.err.println("Error while listing tasks: " + e.getMessage());
+                          }
                           break;
                       case 3:
                     	  //getTaskbyId();
@@ -161,10 +165,13 @@ public class TaskView {
                       default:
                           System.err.println("Invalid choice!");
                   }
-			}catch (Exception e) {
-				System.err.println("Invalid choice!\nChoose between 1....5");
-				mscanner.nextLine();
-			}
+              } catch (InputMismatchException e) {
+                  System.err.println("Invalid input! Please enter a number between 1 and 5");
+                  mscanner.nextLine(); // Important : nettoyer le buffer
+              } catch (Exception e) {
+                  System.err.println("Error: " + e.getMessage());
+                  e.printStackTrace(); // Pour déboguer
+              }
           } // fin while
       mscanner.close();
       	

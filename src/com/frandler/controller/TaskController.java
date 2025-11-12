@@ -29,7 +29,6 @@ public class TaskController {
 				return "Error ! No worker(s) assigned to this task....Try again";
 			}
 //			}
-			
 //			================================================
 		    for (String name : completeNameArrayList) {
 		        if (name == null || name.trim().isEmpty()) {
@@ -37,33 +36,22 @@ public class TaskController {
 		        }
 		    }
 //			================================================
-	        
 	        tskmodel.addTask(completeNameArrayList, task, duration, startAt);
 	        return errorString;
 	        
 	    }
 
 	 public String getTasks() {
-		 if (tskmodel.getTasks().isEmpty()) {
-			 return "No task has been saved!\nChoose (1) in the menu to (+) ADD NEW TASK";
-		 } 
-		 return tskmodel.getTasks();
+		 String tasks = tskmodel.getTasks();
+		    
+		    if (tasks == null || tasks.isEmpty()) {
+		        return "No task has been saved!\nChoose (1) in the menu to (+) ADD NEW TASK";
+		    }
+		    
+		    return tasks;
 	}
-//---------------------------------------------------------	
-	
-//	public String addTask(String task) {
-//		String errorString = "";
-//		String tmpTaskTrimmedString = task.trim();
-//		
-//		if (tmpTaskTrimmedString.isEmpty() || tmpTaskTrimmedString == null) {
-//			errorString= "The task entered is invalid....";
-//		}
-//		tskmodel.saveTaks(tmpTaskTrimmedString);
-//		return errorString;
-//	}
-	
-//---------------------------------------------------------	
-//	 public List<Tasks> getTasks() {
+
+	 //	 public List<Tasks> getTasks() {
 //		return tskmodel.getAllTasks();
 //	 }
 
