@@ -38,7 +38,7 @@ public class TaskController {
 	 public String getTasks() {
 		 String tasks = tskmodel.getTasks();
 		    
-		    if (tasks == null || tasks.isEmpty()) {
+		    if (tasks == "" || tasks.isEmpty()) {
 		        return "No task has been saved!\nChoose (1) in the menu to (+) ADD NEW TASK";
 		    }
 		    
@@ -52,24 +52,25 @@ public class TaskController {
 		 if (id < 0) {
 			 return " ID (< 0) Invalid !";
 		 }
-		 if (task == null) 
+		 if (task == "") 
 		    return " Task "+ id + " not found";
 		 
 		 return task;
 	}
 	 
 //---------------------------------------------------------	 
-//	 public String removeTaskById(int tmpId) {
-//		 String errorString = "";
-//		 
-//			if (tskmodel.removeTaskById(tmpId) == null || tskmodel.removeTaskById(tmpId).isEmpty()) {
-//				errorString = "The task " + tmpId +" not found....";
-//			}
-//			
-//			if (tmpId < 0) {
-//				errorString = "Invalid! ID must be >= 0";
-//			}
-//		return errorString;
-//	}
+	 public String removeTaskById(int tmpId) {
+		 //boolean remove;
+		 String errorString = "Task("+ tmpId +") Succesfully delete";
+		 
+			if (!tskmodel.removeTaskById(tmpId)){
+				return "The task " + tmpId + " not found";
+			}
+			
+			if (tmpId < 0) {
+				errorString = "ID Invalid!";
+			}
+		return errorString;
+	}
 }
 

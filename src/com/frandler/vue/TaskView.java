@@ -95,29 +95,29 @@ public class TaskView {
 	}
 //	12-01-2025 12:30
 //-----------------------------------------------------------------------------------------
-//	public void removeTaskById() {
-//		int idTaskInt = -1;
-//		boolean delete = true;
-//		
-//		try {
-//			System.out.print("------------------------------------------\nPlease enter ID of task : ");
-//			idTaskInt = mscanner.nextInt();
-//	    	
-//			var err = tskController.removeTaskById(idTaskInt); 
-//			if (err != "") {
-//				System.err.println(err);
-//				delete = false;
-//			}
-//
-//			if (delete)
-//				System.out.println("Task "+ "< " + idTaskInt + " >" + " has been deleted succesfully");
-//
-//		} catch (InputMismatchException e) {
-//			System.err.println("ID task should be a number");
-//			mscanner.nextLine();
-//		}
-//		
-//	}
+	public void removeTaskById() {
+		int idTaskInt = -1;
+		boolean delete = true;
+		
+		try {
+			System.out.print("------------------------------------------\nPlease enter ID of task : ");
+			idTaskInt = mscanner.nextInt();
+	    	
+			var err = tskController.removeTaskById(idTaskInt); 
+			if (err != "") {
+				System.err.println(err);
+				delete = false;
+			}
+
+			if (delete)
+				System.out.println("Task "+ "< " + idTaskInt + " >" + " has been deleted succesfully");
+
+		} catch (InputMismatchException e) {
+			System.err.println("ID task should be a number");
+			mscanner.nextLine();
+		}
+		
+	}
 
 //-----------------------------------------------------------------------------------------	
 	public void getMenu() {
@@ -153,7 +153,7 @@ public class TaskView {
                     	  getTaskbyId();
                             break;
                       case 4:
-                    	  //removeTaskById();
+                    	  removeTaskById();
                     	  break;
                       case 5:
                           running = false;

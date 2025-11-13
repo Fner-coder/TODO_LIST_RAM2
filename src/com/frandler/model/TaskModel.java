@@ -4,6 +4,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.frandler.tache.Task;
 
 public class TaskModel{
@@ -91,7 +93,7 @@ public class TaskModel{
     
     public String getTaskById(int id) {
 //  ======================================================================================     
-    	String stringbuilder = null;
+    	String stringbuilder = "";
 
     	for(Task t: masterTaskList) {   
     		LocalDateTime endDate = calculateEndDate(t.getStartDate(), t.getDuree());
@@ -119,6 +121,17 @@ public class TaskModel{
     	
 		return stringbuilder;
 	}
+    
+    public boolean removeTaskById(int id) {
+    	for (Task t : masterTaskList) {
+			if (id == t.getId()) {
+				masterTaskList.remove(t);
+		    	return true;
+			}
+		}
+    	return false;
+    }
+    
     
     
 ////  GET LIST OF TASKS METHOD _2
