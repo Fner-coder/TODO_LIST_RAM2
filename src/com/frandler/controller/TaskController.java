@@ -18,17 +18,11 @@ public class TaskController {
 	        String tmpTaskString = task.trim();
 	        
 			if (tmpTaskString.isEmpty()) {
-				//errorString = "Error ! No task added.... Try again";
-				//return errorString;
 				return "Error ! No task added.... Try again";
 			}
-//			else{
 			if (completeNameArrayList.isEmpty()) {
-//				errorString = "Error ! No worker(s) assigned to this task....Try again";
-//				return errorString;
 				return "Error ! No worker(s) assigned to this task....Try again";
 			}
-//			}
 //			================================================
 		    for (String name : completeNameArrayList) {
 		        if (name == null || name.trim().isEmpty()) {
@@ -51,21 +45,18 @@ public class TaskController {
 		    return tasks;
 	}
 
-	 //	 public List<Tasks> getTasks() {
-//		return tskmodel.getAllTasks();
-//	 }
 
 //---------------------------------------------------------	 
-//	 public String getTaskById(int id) {
-//		 String task = tskmodel.getTaskById(id);
-//		 if (id < 0) {
-//			 return "Invalid! ID must > 0)";
-//		 }
-//		 if (task == null) 
-//		    return " not found";
-//		 
-//		 return task;
-//	}
+	 public String getTaskById(int id) {
+		 String task = tskmodel.getTaskById(id);
+		 if (id < 0) {
+			 return " ID (< 0) Invalid !";
+		 }
+		 if (task == null) 
+		    return " Task "+ id + " not found";
+		 
+		 return task;
+	}
 	 
 //---------------------------------------------------------	 
 //	 public String removeTaskById(int tmpId) {

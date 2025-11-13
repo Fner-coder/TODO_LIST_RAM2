@@ -28,8 +28,10 @@ public class TaskView {
 	   
 	    
 	    System.out.println("\n==== (+) NEW TASK ====");
-	    System.out.print("New task : ");
-	    taskString = mscanner.nextLine();
+	    while (taskString.isEmpty()) {
+	    	System.out.print("New task : ");
+		    taskString = mscanner.nextLine();
+		}
 
 	    System.out.println("How much workers on task (" + taskString + ")?");
 	    nbPeople = mscanner.nextInt();
@@ -39,13 +41,7 @@ public class TaskView {
 	    	System.err.println("Error! Invalid number - Try again:");
 	    	nbPeople = mscanner.nextInt();
 		    mscanner.nextLine(); 
-		}	    
-//		for (int i = 0; i < nbPeople; i++) {
-//	        System.out.print("------------------------------------------\nWorker(" + (i+1) + ") - Complete name: ");
-//	        completeNameString = mscanner.nextLine();
-//	        completeNameArrayList.add(completeNameString);
-//		}
-	    
+		}    	    
 	    for (int i = 0; i < nbPeople; i++) {
 	    	boolean validName = false;
 	    	
@@ -62,14 +58,13 @@ public class TaskView {
 	    	}
 		}
 	    
-	    System.out.println("Duration task - " + taskString + " in minute ?");
+	    System.out.println("Duration of task - ('" + taskString + "') in minute ?");
 	    duration = mscanner.nextInt();
 	    mscanner.nextLine();
 	    
-	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
+	    System.out.print("Start date (format dd-MM-yyyy HH:mm) : ");
 	    startAt = mscanner.nextLine();
 	    
-//	    LocalDateTime endDate = startAt.plus(duration);
 	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
@@ -83,20 +78,22 @@ public class TaskView {
 	}
 
 //-----------------------------------------------------------------------------------------	
-//	public void getTaskbyId() {
-//	    try {
-//	        System.out.print("------------------------------------------\nPlease enter ID of task : ");
-//	        int idTaskInt = mscanner.nextInt();	    
-//	    	mscanner.nextLine(); 
-//
-//	    	String task = tskController.getTaskById(idTaskInt);
-//	        System.out.println("Task ("+ idTaskInt+ "): " + task);
-//	    } catch (InputMismatchException e) {
-//	        System.err.println("❌ ID task should be a number");
-//	        mscanner.nextLine(); 
-//	    }
-//	}
-	
+	public void getTaskbyId() {
+	    try {
+	        System.out.print("------------------------------------------\nPlease enter ID of task : ");
+	        int idTaskInt = mscanner.nextInt();	    
+	    	mscanner.nextLine(); 
+
+//	    	if (tskController.getTaskById(idTaskInt) != null) {
+	    		System.out.println(tskController.getTaskById(idTaskInt));
+//			}
+	        
+	    } catch (InputMismatchException e) {
+	        System.err.println("❌ ID task should be a number");
+	        mscanner.nextLine(); 
+	    }
+	}
+//	12-01-2025 12:30
 //-----------------------------------------------------------------------------------------
 //	public void removeTaskById() {
 //		int idTaskInt = -1;
@@ -153,7 +150,7 @@ public class TaskView {
                           }
                           break;
                       case 3:
-                    	  //getTaskbyId();
+                    	  getTaskbyId();
                             break;
                       case 4:
                     	  //removeTaskById();
