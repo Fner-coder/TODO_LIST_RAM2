@@ -41,10 +41,8 @@ public class TaskController {
 		    if (tasks == "" || tasks.isEmpty()) {
 		        return "No task has been saved!\nChoose (1) in the menu to (+) ADD NEW TASK";
 		    }
-		    
 		    return tasks;
 	}
-
 
 //---------------------------------------------------------	 
 	 public String getTaskById(int id) {
@@ -54,19 +52,15 @@ public class TaskController {
 		 }
 		 if (task == "") 
 		    return " Task "+ id + " not found";
-		 
 		 return task;
 	}
 	 
 //---------------------------------------------------------	 
 	 public String removeTaskById(int tmpId) {
-		 //boolean remove;
 		 String errorString = "Task("+ tmpId +") Succesfully delete";
-		 
 			if (!tskmodel.removeTaskById(tmpId)){
-				return "The task " + tmpId + " not found";
+				errorString = "The task " + tmpId + " not found";
 			}
-			
 			if (tmpId < 0) {
 				errorString = "ID Invalid!";
 			}

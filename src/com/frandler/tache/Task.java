@@ -1,15 +1,8 @@
 package com.frandler.tache;
-
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 public class Task {
 	
-	private int id;
-	private int duration;
-	private String taskString;
-	private ArrayList<String> assignedTo = new ArrayList<String>();
-	private String startAt;
+	
 //  
 //    private String taskDescriptionString;
 //    LocalDateTime fin = LocalDateTime.now();
@@ -19,15 +12,28 @@ public class Task {
 	    MEDIUM, 
 	    LOW     
 	}
-//	
-//	public enum TaskStatus {
-//	    To_do,
-//	    In_progress,  
-//	    Terminate,
-//	    Done
-//	}
+	
+	public enum TaskStatus {
+	    To_do,
+	    In_progress,  
+	    Terminate,
+	    Done
+	}
 
+	private int id;
+	private int duration;
+	private String taskString;
+	private ArrayList<String> assignedTo = new ArrayList<String>();
+	private String startDate;
+	private TaskStatus status;
 
+	public TaskStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TaskStatus status) {
+		this.status = status;
+	}
 
 	public Task(ArrayList<String> assignedTo) {
 		this.assignedTo = assignedTo;
@@ -65,7 +71,14 @@ public class Task {
 		this.duration = duree;
 	}
 
+	public String getStartDate() {
+		return startDate;
+	}
 
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+	
 	public Task() {
 		// TODO Auto-generated constructor stub
 	}
@@ -75,15 +88,7 @@ public class Task {
 		this.assignedTo = assignedTo;
 		this.taskString = taskString;
 		this.duration = duration;
-		this.startAt = startAt;
-	}
-
-	public String getStartDate() {
-		return startAt;
-	}
-
-	public void setStartDate(String startAt) {
-		this.startAt = startAt;
+		this.startDate = startAt;
 	}
 
 

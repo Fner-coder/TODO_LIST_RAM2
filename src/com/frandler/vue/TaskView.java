@@ -1,8 +1,4 @@
 package com.frandler.vue;
-
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -97,8 +93,6 @@ public class TaskView {
 //-----------------------------------------------------------------------------------------
 	public void removeTaskById() {
 		int idTaskInt = -1;
-		boolean delete = true;
-		
 		try {
 			System.out.print("------------------------------------------\nPlease enter ID of task : ");
 			idTaskInt = mscanner.nextInt();
@@ -106,11 +100,7 @@ public class TaskView {
 			var err = tskController.removeTaskById(idTaskInt); 
 			if (err != "") {
 				System.err.println(err);
-				delete = false;
 			}
-
-			if (delete)
-				System.out.println("Task "+ "< " + idTaskInt + " >" + " has been deleted succesfully");
 
 		} catch (InputMismatchException e) {
 			System.err.println("ID task should be a number");
@@ -164,10 +154,10 @@ public class TaskView {
                   }
               } catch (InputMismatchException e) {
                   System.err.println("Invalid input! Please enter a number between 1 and 5");
-                  mscanner.nextLine(); // Important : nettoyer le buffer
+                  mscanner.nextLine(); // Important : cleaning buffer
               } catch (Exception e) {
                   System.err.println("Error: " + e.getMessage());
-                  e.printStackTrace(); // Pour déboguer
+                  e.printStackTrace(); // debug
               }
           } // fin while
       mscanner.close();

@@ -4,9 +4,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import com.frandler.tache.Task;
+import com.frandler.tache.Task.TaskStatus;
 
 public class TaskModel{
 	
@@ -22,7 +22,7 @@ public class TaskModel{
         return newId++;
     }
 	
-// Méthode pour formater la durée (votre méthode existante améliorée)======================
+// Duration FORMATING ==========================================================
 	private String formatDuration(int duration) {
 	    int days = duration / (60 * 24);
 	    int hours = (duration % (60 * 24)) / 60;
@@ -48,7 +48,7 @@ public class TaskModel{
         LocalDateTime endDate = startDate.plusMinutes(durationInMinutes);
         return endDate;
     }
-   
+  
 // Method for duration between two dates==================================================
     public String calculateDurationBetweenDates(String startAt, String endAt) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
@@ -63,11 +63,25 @@ public class TaskModel{
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
+    	TaskStatus statusString = null;
     	
     	for (Task t : masterTaskList) {
     		LocalDateTime endDate = calculateEndDate(t.getStartDate(), t.getDuree());
     		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
             LocalDateTime startDate = LocalDateTime.parse(t.getStartDate(), formatter);
+            
+            LocalDateTime now = LocalDateTime.now();
+            
+            if (!endDate.isAfter(now))// {
+            	statusString = TaskStatus.Done;
+           // }
+            if (startDate.isAfter(now)) //{
+            	statusString = TaskStatus.To_do;
+            if (startDate.isBefore(now) && endDate.isBefore(now)) //{
+            	statusString = TaskStatus.In_progress;
+//            } else {
+//            	statusString = TaskStatus.In_progress;
+//            }
             
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
@@ -84,7 +98,9 @@ public class TaskModel{
 					"\n Assigned to: " + workersString +
 					"\n Start Date: " + startDate.format(formatter) +
 					"\n Duration: " + formatDuration(t.getDuree()) +
-					"\n End Date: " + endDate.format(formatter) +"\n";
+					"\n End Date: " + endDate.format(formatter) +
+					"\n Status: " + statusString +"\n";
+    		
     		stringbuilder += "-----------------------------------------------------------------\n";
     	}
         
