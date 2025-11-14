@@ -72,21 +72,16 @@ public class TaskModel{
             
             LocalDateTime now = LocalDateTime.now();
             
-            if (!endDate.isAfter(now))// {
+            if (!endDate.isAfter(now))
             	statusString = TaskStatus.Done;
-           // }
-            if (startDate.isAfter(now)) //{
+            if (startDate.isAfter(now))
             	statusString = TaskStatus.To_do;
-            if (startDate.isBefore(now) && endDate.isBefore(now)) //{
+            if (startDate.isBefore(now) && endDate.isBefore(now))
             	statusString = TaskStatus.In_progress;
-//            } else {
-//            	statusString = TaskStatus.In_progress;
-//            }
             
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
-    		
-    		//
+
     		for(int i = 0; i < assignedTo.size(); i++) {
 				workersString += assignedTo.get(i);
 				 if (i < assignedTo.size() - 1) {
