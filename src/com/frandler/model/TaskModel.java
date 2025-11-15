@@ -3,9 +3,11 @@ package com.frandler.model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import com.frandler.tache.Task;
+import com.frandler.tache.Task.Priority;
 import com.frandler.tache.Task.TaskStatus;
 
 public class TaskModel{
@@ -60,6 +62,26 @@ public class TaskModel{
         return formatDuration((int) totalMinutes);
     }
     
+// PRIORITY METHOD
+   public Priority PriorityOfTask(String startAt) {
+	   //Priority priority = null;
+	   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+       LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
+       LocalDateTime nowDateTime = LocalDateTime.now();
+       
+       long hoursDiff = ChronoUnit.HOURS.between(nowDateTime, startDate);
+       
+       if (hoursDiff <= 24 && hoursDiff >= 0) {
+    	   return Priority.HIGH; //("La tâche commence dans moins de 24 heures.");
+       }
+       else if (hoursDiff > 24 && hoursDiff <=48) {
+    	   return Priority.MEDIUM;
+       }
+       else {
+    	   return Priority.LOW;
+       }
+}
+    
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
@@ -72,14 +94,12 @@ public class TaskModel{
             
             LocalDateTime now = LocalDateTime.now();
             
-            if (!endDate.isAfter(now))
+            if (startDate.isBefore(now) && endDate.isBefore(now))
             	status = TaskStatus.Done;
             if (startDate.isAfter(now))
             	status = TaskStatus.To_do;
-            if (startDate.isBefore(now) && endDate.isBefore(now))
+            if (startDate.isBefore(now) && endDate.isAfter(now))
             	status = TaskStatus.In_progress;
-            
-            
             
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
@@ -90,13 +110,14 @@ public class TaskModel{
 					 workersString += ", ";
 	                }
 			}
-    		stringbuilder +=" ID_task: " + t.getId() +
+    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + PriorityOfTask(startDate.format(formatter))+
 					"\n Task: " + t.getTaskString() +
 					"\n Assigned to: " + workersString +
 					"\n Start Date: " + startDate.format(formatter) +
 					"\n Duration: " + formatDuration(t.getDuree()) +
 					"\n End Date: " + endDate.format(formatter) +
-					"\n Status: " + status +"\n";
+					"\n Status: " + status + "\n";
+					//"\n Task priority: " + PriorityOfTask(startDate.format(formatter))+ "\n";
     		
     		stringbuilder += "-----------------------------------------------------------------\n";
     	}
