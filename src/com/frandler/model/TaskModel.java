@@ -26,63 +26,11 @@ public class TaskModel{
         masterTaskList.add(newTask);
         return newId++;
     }
-	
-// Duration FORMATING ==========================================================
-//	private String formatDuration(int duration) {
-//	    int days = duration / (60 * 24);
-//	    int hours = (duration % (60 * 24)) / 60;
-//	    int minutes = duration % 60;
-//	    StringBuilder result = new StringBuilder();
-//	    if (days > 0) 
-//	        result.append(days).append(days > 1 ? " days:" : " day:");
-//	    if (hours == 0) {
-//	    	result.append(String.format("%02dm", minutes));
-//	    }
-//	    else {
-//	    	result.append(String.format("%dh:%02dm", hours, minutes));
-//		}
-//	    return result.toString();
-//	}
- 
-// Method for Ending date================================================================
-//    public LocalDateTime calculateEndDate(String startAt, int durationInMinutes) {
-//        
-//    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-//        LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
-//        // duration setup in minutes
-//        LocalDateTime endDate = startDate.plusMinutes(durationInMinutes);
-//        return endDate;
-//    }
-  
-// Method for duration between two dates==================================================
-//    public String calculateDurationBetweenDates(String startAt, String endAt) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-//        LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
-//        LocalDateTime endDate = LocalDateTime.parse(endAt, formatter);
-//        Duration duration = Duration.between(startDate, endDate);
-//        long totalMinutes = duration.toMinutes();
-//        
-//        return formatDuration((int) totalMinutes);
-//    }
-    
-// cancel task Method
-//    public boolean cancelTask(int id) {
-//    	for (Task t : masterTaskList) {
-//			if (id == t.getId()) {
-//				masterTaskList.remove(t);
-//		    	return true;
-//			}
-//		}
-//    	return false;
-//    }
     
 // PRIORITY METHOD
    public Priority PriorityOfTask(String startAt) {
-	   //Priority priority = null;
-//	   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
        LocalDateTime startDate = dateUtils.parseDateTime(startAt);
        LocalDateTime nowDateTime = LocalDateTime.now();
-       
        long hoursDiff = ChronoUnit.HOURS.between(nowDateTime, startDate);
        
        if (hoursDiff <= 24 && hoursDiff >= 0 && startDate.isAfter(nowDateTime)) {
@@ -97,7 +45,6 @@ public class TaskModel{
        else {
     	   return Priority.NONE;
        }
-	   //return null;
 }
     
    public TaskStatus taskStatus() {
@@ -117,24 +64,40 @@ public class TaskModel{
 	   return status;
        
    }
+// cancel task Method
+   public String cancelTask(int id) {
+	   String stringbuilder = "";
+	   for (Task t : masterTaskList) {
+			if (id == t.getId()) {
+				stringbuilder =" Task: " + t.getTaskString() +
+            			"\n Priority: " + PriorityOfTask(t.getStartDate())+
+       					"\n Assigned to: " + String.join(", ", t.getAssignedTo()) +
+       					"\n Start Date: " + t.getStartDate() +
+       					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
+       					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
+       					"\n Status: " + TaskStatus.Cancelled + "\n";
+               }
+           		stringbuilder += "-----------------------------------------------------------------\n";
+			}
+	   return stringbuilder;
+   }
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
-//    	TaskStatus status = null;
-    	
+
     	for (Task t : masterTaskList) {
     		
-    		String workersString = "";
-    		ArrayList<String> assignedTo = t.getAssignedTo();
-    		
+//			- ArrayList<String> assignedTo = t.getAssignedTo();
 //    		for(int i = 0; i < assignedTo.size(); i++) {
 //				workersString += assignedTo.get(i);
 //				 if (i < assignedTo.size() - 1) {
 //					 workersString += ", ";
 //	                }
 //			}
+    		
     		// ameliorate version of listing people into the list "assignedTo" 
-    		workersString = java.lang.String.join(", ", t.getAssignedTo());
+    		String workersString = "";
+    		workersString = String.join(", ", t.getAssignedTo());
     		
     		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + PriorityOfTask(t.getStartDate())+
 					"\n Task: " + t.getTaskString() +
@@ -148,38 +111,24 @@ public class TaskModel{
         
         return stringbuilder ;
     }
-    
-    public String getTaskById(int id) {
 //  ======================================================================================     
+    public String getTaskById(int id) {	
     	String stringbuilder = "";
 
     	for(Task t: masterTaskList) {   
-    		LocalDateTime startDate = dateUtils.parseDateTime(t.getStartDate());
-    		LocalDateTime endDate = dateUtils.calculateEndDate(t.getStartDate(), t.getDuree());
-            LocalDateTime nowDateTime = LocalDateTime.now();
-            
     		String workersString = "";
-    		ArrayList<String> assignedTo = t.getAssignedTo();
     		
-    		for(int i = 0; i < assignedTo.size(); i++) {
-				workersString += assignedTo.get(i);
-				 if (i < assignedTo.size() - 1) {
-					 workersString += ", ";
-	                }
-			}
                if (id == t.getId()) {
             	   stringbuilder =" Task: " + t.getTaskString() +
             			"\n Priority: " + PriorityOfTask(t.getStartDate())+
        					"\n Assigned to: " + workersString +
-       					"\n Start Date: " + startDate +
+       					"\n Start Date: " + t.getStartDate() +
        					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
-       					"\n End Date: " + endDate +
+       					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
        					"\n Status: " + taskStatus() + "\n";
                }
            		stringbuilder += "-----------------------------------------------------------------\n";
-           	
     	}   
-        
 		return stringbuilder;
 	}
     
@@ -193,9 +142,7 @@ public class TaskModel{
     	return false;
     }
     
-    
-    
-////  GET LIST OF TASKS METHOD _2
+////  GET LIST OF TASKS METHOD with a better StringBuilder
 //    public String getTasks() {
 //        StringBuilder stb = new StringBuilder();
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");

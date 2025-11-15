@@ -108,6 +108,25 @@ public class TaskView {
 		}
 		
 	}
+	
+	public void cancelTask() {
+		int idTaskInt = -1;
+		try {
+			System.out.print("------------------------------------------\nPlease enter ID of task : ");
+			idTaskInt = mscanner.nextInt();
+	    	
+			var err = tskController.cancelTask(idTaskInt); 
+			if (err != "") {
+				System.err.println(err);
+			}
+
+		} catch (InputMismatchException e) {
+			System.err.println("ID task should be a number");
+			mscanner.nextLine();
+		}
+		
+	}
+	
 
 //-----------------------------------------------------------------------------------------	
 	public void getMenu() {
@@ -144,11 +163,10 @@ public class TaskView {
                     	  getTaskbyId();
                             break;
                       case 4:
-                    	  removeTaskById();
+                    	  cancelTask();
                     	  break;
                       case 5:
-                          running = false;
-                          //cancelTask();
+                    	  removeTaskById();
                           break;
                       case 6:
                           running = false;
