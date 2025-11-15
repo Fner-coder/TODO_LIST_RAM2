@@ -63,7 +63,7 @@ public class TaskModel{
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
-    	TaskStatus statusString = null;
+    	TaskStatus status = null;
     	
     	for (Task t : masterTaskList) {
     		LocalDateTime endDate = calculateEndDate(t.getStartDate(), t.getDuree());
@@ -73,11 +73,13 @@ public class TaskModel{
             LocalDateTime now = LocalDateTime.now();
             
             if (!endDate.isAfter(now))
-            	statusString = TaskStatus.Done;
+            	status = TaskStatus.Done;
             if (startDate.isAfter(now))
-            	statusString = TaskStatus.To_do;
+            	status = TaskStatus.To_do;
             if (startDate.isBefore(now) && endDate.isBefore(now))
-            	statusString = TaskStatus.In_progress;
+            	status = TaskStatus.In_progress;
+            
+            
             
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
@@ -94,7 +96,7 @@ public class TaskModel{
 					"\n Start Date: " + startDate.format(formatter) +
 					"\n Duration: " + formatDuration(t.getDuree()) +
 					"\n End Date: " + endDate.format(formatter) +
-					"\n Status: " + statusString +"\n";
+					"\n Status: " + status +"\n";
     		
     		stringbuilder += "-----------------------------------------------------------------\n";
     	}

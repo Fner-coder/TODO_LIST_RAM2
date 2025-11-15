@@ -2,23 +2,19 @@ package com.frandler.tache;
 import java.util.ArrayList;
 public class Task {
 	
+	public enum TaskStatus {
+	    To_do,
+	    In_progress,  
+	    Terminate,
+	    Done
+	}  
 	
-//  
-//    private String taskDescriptionString;
-//    LocalDateTime fin = LocalDateTime.now();
-    
 	public enum Priority {
 	    HIGH,   
 	    MEDIUM, 
 	    LOW     
 	}
 	
-	public enum TaskStatus {
-	    To_do,
-	    In_progress,  
-	    Terminate,
-	    Done
-	}
 
 	private int id;
 	private int duration;
@@ -26,14 +22,23 @@ public class Task {
 	private ArrayList<String> assignedTo = new ArrayList<String>();
 	private String startDate;
 	private TaskStatus status;
+	private Priority priority;
 
+	public Priority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(Priority priority) {
+		this.priority = priority;
+	}
+	
 	public TaskStatus getStatus() {
 		return status;
 	}
 
 	public void setStatus(TaskStatus status) {
 		this.status = status;
-	}
+	} 
 
 	public Task(ArrayList<String> assignedTo) {
 		this.assignedTo = assignedTo;
