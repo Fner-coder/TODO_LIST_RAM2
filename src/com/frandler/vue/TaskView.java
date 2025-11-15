@@ -121,8 +121,9 @@ public class TaskView {
                   System.out.println("1. (+) NEW Task");
                   System.out.println("2. LIST ALL Tasks");
                   System.out.println("3. LIST TASK BY ID");
-                  System.out.println("4. DELETE Task");
-                  System.out.println("5. LEAVE");
+                  System.out.println("4. CANCEL a Task");
+                  System.out.println("5. DELETE Task");
+                  System.out.println("6. LEAVE");
                   System.out.print("Your Choice : ");
                   
                   choice = mscanner.nextInt();
@@ -146,6 +147,10 @@ public class TaskView {
                     	  removeTaskById();
                     	  break;
                       case 5:
+                          running = false;
+                          //cancelTask();
+                          break;
+                      case 6:
                           running = false;
                           System.out.println("Bye Bye! !");
                           break;

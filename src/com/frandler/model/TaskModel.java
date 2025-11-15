@@ -6,16 +6,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import com.frandler.dateUtils.DateUtils;
 import com.frandler.tache.Task;
 import com.frandler.tache.Task.Priority;
 import com.frandler.tache.Task.TaskStatus;
 
 public class TaskModel{
 	
+	private static final String String = null;
+	private DateUtils dateUtils = new DateUtils();	
+	private ArrayList<Task> masterTaskList = new ArrayList<Task>();
 	Task task = new Task();
-	
 	int compt = 1;
-	ArrayList<Task> masterTaskList = new ArrayList<Task>();
+	
 	
 	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
 		int newId = compt++;
@@ -25,100 +28,121 @@ public class TaskModel{
     }
 	
 // Duration FORMATING ==========================================================
-	private String formatDuration(int duration) {
-	    int days = duration / (60 * 24);
-	    int hours = (duration % (60 * 24)) / 60;
-	    int minutes = duration % 60;
-	    StringBuilder result = new StringBuilder();
-	    if (days > 0) 
-	        result.append(days).append(days > 1 ? " days:" : " day:");
-	    if (hours == 0) {
-	    	result.append(String.format("%02dm", minutes));
-	    }
-	    else {
-	    	result.append(String.format("%dh:%02dm", hours, minutes));
-		}
-	    return result.toString();
-	}
+//	private String formatDuration(int duration) {
+//	    int days = duration / (60 * 24);
+//	    int hours = (duration % (60 * 24)) / 60;
+//	    int minutes = duration % 60;
+//	    StringBuilder result = new StringBuilder();
+//	    if (days > 0) 
+//	        result.append(days).append(days > 1 ? " days:" : " day:");
+//	    if (hours == 0) {
+//	    	result.append(String.format("%02dm", minutes));
+//	    }
+//	    else {
+//	    	result.append(String.format("%dh:%02dm", hours, minutes));
+//		}
+//	    return result.toString();
+//	}
  
 // Method for Ending date================================================================
-    public LocalDateTime calculateEndDate(String startAt, int durationInMinutes) {
-        
-    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
-        // duration setup in minutes
-        LocalDateTime endDate = startDate.plusMinutes(durationInMinutes);
-        return endDate;
-    }
+//    public LocalDateTime calculateEndDate(String startAt, int durationInMinutes) {
+//        
+//    	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+//        LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
+//        // duration setup in minutes
+//        LocalDateTime endDate = startDate.plusMinutes(durationInMinutes);
+//        return endDate;
+//    }
   
 // Method for duration between two dates==================================================
-    public String calculateDurationBetweenDates(String startAt, String endAt) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
-        LocalDateTime endDate = LocalDateTime.parse(endAt, formatter);
-        Duration duration = Duration.between(startDate, endDate);
-        long totalMinutes = duration.toMinutes();
-        
-        return formatDuration((int) totalMinutes);
-    }
+//    public String calculateDurationBetweenDates(String startAt, String endAt) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+//        LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
+//        LocalDateTime endDate = LocalDateTime.parse(endAt, formatter);
+//        Duration duration = Duration.between(startDate, endDate);
+//        long totalMinutes = duration.toMinutes();
+//        
+//        return formatDuration((int) totalMinutes);
+//    }
+    
+// cancel task Method
+//    public boolean cancelTask(int id) {
+//    	for (Task t : masterTaskList) {
+//			if (id == t.getId()) {
+//				masterTaskList.remove(t);
+//		    	return true;
+//			}
+//		}
+//    	return false;
+//    }
     
 // PRIORITY METHOD
    public Priority PriorityOfTask(String startAt) {
 	   //Priority priority = null;
-	   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-       LocalDateTime startDate = LocalDateTime.parse(startAt, formatter);
+//	   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+       LocalDateTime startDate = dateUtils.parseDateTime(startAt);
        LocalDateTime nowDateTime = LocalDateTime.now();
        
        long hoursDiff = ChronoUnit.HOURS.between(nowDateTime, startDate);
        
-       if (hoursDiff <= 24 && hoursDiff >= 0) {
-    	   return Priority.HIGH; //("La tâche commence dans moins de 24 heures.");
+       if (hoursDiff <= 24 && hoursDiff >= 0 && startDate.isAfter(nowDateTime)) {
+    	   return Priority.HIGH;
        }
-       else if (hoursDiff > 24 && hoursDiff <=48) {
+       if (hoursDiff > 24 && hoursDiff <=48 && startDate.isAfter(nowDateTime)) {
     	   return Priority.MEDIUM;
        }
-       else {
+       if (hoursDiff > 48 && startDate.isAfter(nowDateTime)){
     	   return Priority.LOW;
        }
+       else {
+    	   return Priority.NONE;
+       }
+	   //return null;
 }
     
+   public TaskStatus taskStatus() {
+	   TaskStatus status = null;
+	   for (Task t : masterTaskList) {
+		   LocalDateTime startDate = dateUtils.parseDateTime(t.getStartDate());
+		   LocalDateTime endDate = dateUtils.calculateEndDate(t.getStartDate(), t.getDuree());
+	       LocalDateTime nowDateTime = LocalDateTime.now();
+	       
+	       if (startDate.isBefore(nowDateTime) && endDate.isBefore(nowDateTime))
+	    	   return TaskStatus.Done;
+	       if (startDate.isAfter(nowDateTime))
+	    	   return TaskStatus.To_do;
+	       if (startDate.isBefore(nowDateTime) && endDate.isAfter(nowDateTime))
+	    	   return TaskStatus.In_progress;
+	   }
+	   return status;
+       
+   }
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
-    	TaskStatus status = null;
+//    	TaskStatus status = null;
     	
     	for (Task t : masterTaskList) {
-    		LocalDateTime endDate = calculateEndDate(t.getStartDate(), t.getDuree());
-    		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-            LocalDateTime startDate = LocalDateTime.parse(t.getStartDate(), formatter);
-            
-            LocalDateTime now = LocalDateTime.now();
-            
-            if (startDate.isBefore(now) && endDate.isBefore(now))
-            	status = TaskStatus.Done;
-            if (startDate.isAfter(now))
-            	status = TaskStatus.To_do;
-            if (startDate.isBefore(now) && endDate.isAfter(now))
-            	status = TaskStatus.In_progress;
-            
+    		
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
-
-    		for(int i = 0; i < assignedTo.size(); i++) {
-				workersString += assignedTo.get(i);
-				 if (i < assignedTo.size() - 1) {
-					 workersString += ", ";
-	                }
-			}
-    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + PriorityOfTask(startDate.format(formatter))+
+    		
+//    		for(int i = 0; i < assignedTo.size(); i++) {
+//				workersString += assignedTo.get(i);
+//				 if (i < assignedTo.size() - 1) {
+//					 workersString += ", ";
+//	                }
+//			}
+    		// ameliorate version of listing people into the list "assignedTo" 
+    		workersString = java.lang.String.join(", ", t.getAssignedTo());
+    		
+    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + PriorityOfTask(t.getStartDate())+
 					"\n Task: " + t.getTaskString() +
 					"\n Assigned to: " + workersString +
-					"\n Start Date: " + startDate.format(formatter) +
-					"\n Duration: " + formatDuration(t.getDuree()) +
-					"\n End Date: " + endDate.format(formatter) +
-					"\n Status: " + status + "\n";
-					//"\n Task priority: " + PriorityOfTask(startDate.format(formatter))+ "\n";
-    		
+					"\n Start Date: " + t.getStartDate() +
+					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
+					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
+					"\n Status: " + taskStatus() + "\n";
     		stringbuilder += "-----------------------------------------------------------------\n";
     	}
         
@@ -130,9 +154,9 @@ public class TaskModel{
     	String stringbuilder = "";
 
     	for(Task t: masterTaskList) {   
-    		LocalDateTime endDate = calculateEndDate(t.getStartDate(), t.getDuree());
-    		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-            LocalDateTime startDate = LocalDateTime.parse(t.getStartDate(), formatter);
+    		LocalDateTime startDate = dateUtils.parseDateTime(t.getStartDate());
+    		LocalDateTime endDate = dateUtils.calculateEndDate(t.getStartDate(), t.getDuree());
+            LocalDateTime nowDateTime = LocalDateTime.now();
             
     		String workersString = "";
     		ArrayList<String> assignedTo = t.getAssignedTo();
@@ -145,14 +169,17 @@ public class TaskModel{
 			}
                if (id == t.getId()) {
             	   stringbuilder =" Task: " + t.getTaskString() +
+            			"\n Priority: " + PriorityOfTask(t.getStartDate())+
        					"\n Assigned to: " + workersString +
-       					"\n Start Date: " + startDate.format(formatter) +
-       					"\n Duration: " + formatDuration(t.getDuree()) +
-       					"\n End Date: " + endDate.format(formatter);
-			}
-               stringbuilder += "\n----------------------------------------------------------------------\n";
-    	}
-    	
+       					"\n Start Date: " + startDate +
+       					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
+       					"\n End Date: " + endDate +
+       					"\n Status: " + taskStatus() + "\n";
+               }
+           		stringbuilder += "-----------------------------------------------------------------\n";
+           	
+    	}   
+        
 		return stringbuilder;
 	}
     

@@ -5,14 +5,15 @@ public class Task {
 	public enum TaskStatus {
 	    To_do,
 	    In_progress,  
-	    Terminate,
+	    Terminated,
 	    Done
 	}  
 	
 	public enum Priority {
 	    HIGH,   
 	    MEDIUM, 
-	    LOW     
+	    LOW,
+	    NONE
 	}
 	
 
