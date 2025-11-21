@@ -1,8 +1,9 @@
 package com.frandler.model;
 
-import java.time.Duration;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
@@ -10,24 +11,45 @@ import com.frandler.dateUtils.DateUtils;
 import com.frandler.tache.Task;
 import com.frandler.tache.Task.Priority;
 import com.frandler.tache.Task.TaskStatus;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class TaskModel{
 	
+	Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private static final String String = null;
 	private DateUtils dateUtils = new DateUtils();	
 	private ArrayList<Task> masterTaskList = new ArrayList<Task>();
 	Task task = new Task();
 	int compt = 1;
 	
+	private static final String FILE_PATH = "C:/Users/dell/TODO_LIST_RAM2/target/tasks.json";
 	
+	
+//	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
+//		int newId = compt++;
+//        Task newTask = new Task(newId, assignedTo, taskString, duration, startAt);
+//        masterTaskList.add(newTask);
+//        return newId;
+//    }
+	
+	// SAVE ALL TASK IN JSON
 	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
 		int newId = compt++;
-        Task newTask = new Task(newId, assignedTo, taskString, duration, startAt);
-        masterTaskList.add(newTask);
-        return newId++;
-    }
-    
-// PRIORITY METHOD
+		Task newTask = new Task(newId, assignedTo, taskString, duration, startAt);
+		File folder = new File("C:/Users/dell/TODO_LIST_RAM2/target");
+	    if (!folder.exists()) {
+	        folder.mkdirs();
+	    }
+//	    Task task = new Task();
+	    try (FileWriter writer = new FileWriter(FILE_PATH)) {
+	        gson.toJson(newTask, writer);
+	    } catch (IOException e) {
+	    }
+		return newId;
+	}
+	
+ // PRIORITY METHOD
    public Priority PriorityOfTask(String startAt) {
        LocalDateTime startDate = dateUtils.parseDateTime(startAt);
        LocalDateTime nowDateTime = LocalDateTime.now();

@@ -60,7 +60,7 @@ public class TaskView {
 	    
 	    System.out.print("Start date (format dd-MM-yyyy HH:mm) : ");
 	    startAt = mscanner.nextLine();
-	    
+	    //model.saveTasksToJson("tasks.json");
 	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
@@ -80,9 +80,7 @@ public class TaskView {
 	        int idTaskInt = mscanner.nextInt();	    
 	    	mscanner.nextLine(); 
 
-//	    	if (tskController.getTaskById(idTaskInt) != null) {
 	    		System.out.println(tskController.getTaskById(idTaskInt));
-//			}
 	        
 	    } catch (InputMismatchException e) {
 	        System.err.println("❌ ID task should be a number");
