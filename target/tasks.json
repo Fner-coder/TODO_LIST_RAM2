@@ -1,9 +1,11 @@
-{
-  "id": 1,
-  "duration": 123,
-  "taskString": "lessive",
-  "assignedTo": [
-    "landie"
-  ],
-  "startDate": "15-11-2025 12:30"
-}
+[
+  {
+    "id": 1,
+    "duration": 34,
+    "taskString": "Lessive",
+    "assignedTo": [
+      "Landie"
+    ],
+    "startDate": "2025-11-21 12:00"
+  }
+]

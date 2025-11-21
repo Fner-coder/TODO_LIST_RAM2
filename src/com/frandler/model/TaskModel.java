@@ -17,7 +17,7 @@ import com.google.gson.GsonBuilder;
 public class TaskModel{
 	
 	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	private static final String String = null;
+	//private static final String String = null;
 	private DateUtils dateUtils = new DateUtils();	
 	private ArrayList<Task> masterTaskList = new ArrayList<Task>();
 	Task task = new Task();
@@ -41,9 +41,9 @@ public class TaskModel{
 	    if (!folder.exists()) {
 	        folder.mkdirs();
 	    }
-//	    Task task = new Task();
 	    try (FileWriter writer = new FileWriter(FILE_PATH)) {
-	        gson.toJson(newTask, writer);
+	    	masterTaskList.add(newTask);
+	        gson.toJson(masterTaskList, writer);
 	    } catch (IOException e) {
 	    }
 		return newId;
@@ -55,17 +55,17 @@ public class TaskModel{
        LocalDateTime nowDateTime = LocalDateTime.now();
        long hoursDiff = ChronoUnit.HOURS.between(nowDateTime, startDate);
        
-       if (hoursDiff <= 24 && hoursDiff >= 0 && startDate.isAfter(nowDateTime)) {
+       if ((hoursDiff <= 24 && hoursDiff >= 0) && startDate.isAfter(nowDateTime)) {
     	   return Priority.HIGH;
        }
-       if (hoursDiff > 24 && hoursDiff <=48 && startDate.isAfter(nowDateTime)) {
+       if ((hoursDiff > 24 && hoursDiff <=48) && startDate.isAfter(nowDateTime)) {
     	   return Priority.MEDIUM;
        }
        if (hoursDiff > 48 && startDate.isAfter(nowDateTime)){
     	   return Priority.LOW;
        }
        else {
-    	   return Priority.NONE;
+    	   return Priority.HIGH;
        }
 }
     
@@ -74,13 +74,12 @@ public class TaskModel{
 	   for (Task t : masterTaskList) {
 		   LocalDateTime startDate = dateUtils.parseDateTime(t.getStartDate());
 		   LocalDateTime endDate = dateUtils.calculateEndDate(t.getStartDate(), t.getDuree());
-	       LocalDateTime nowDateTime = LocalDateTime.now();
-	       
-	       if (startDate.isBefore(nowDateTime) && endDate.isBefore(nowDateTime))
+//	       LocalDateTime nowDateTime = LocalDateTime.now();
+	       if ((startDate.isBefore(LocalDateTime.now())) && (endDate.isBefore(LocalDateTime.now())))
 	    	   return TaskStatus.Done;
-	       if (startDate.isAfter(nowDateTime))
+	       if ((startDate.isAfter(LocalDateTime.now())) && (endDate.isAfter(LocalDateTime.now())))
 	    	   return TaskStatus.To_do;
-	       if (startDate.isBefore(nowDateTime) && endDate.isAfter(nowDateTime))
+	       if ((startDate.isBefore(LocalDateTime.now()) && endDate.isAfter(LocalDateTime.now())) || (startDate == LocalDateTime.now() && endDate.isAfter(LocalDateTime.now())))
 	    	   return TaskStatus.In_progress;
 	   }
 	   return status;
@@ -92,7 +91,7 @@ public class TaskModel{
 	   for (Task t : masterTaskList) {
 			if (id == t.getId()) {
 				stringbuilder =" Task: " + t.getTaskString() +
-            			"\n Priority: " + PriorityOfTask(t.getStartDate())+
+            			" Priority: " + PriorityOfTask(t.getStartDate())+
        					"\n Assigned to: " + String.join(", ", t.getAssignedTo()) +
        					"\n Start Date: " + t.getStartDate() +
        					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
@@ -106,7 +105,6 @@ public class TaskModel{
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
-
     	for (Task t : masterTaskList) {
     		
 //			- ArrayList<String> assignedTo = t.getAssignedTo();
@@ -120,7 +118,7 @@ public class TaskModel{
     		// ameliorate version of listing people into the list "assignedTo" 
     		String workersString = "";
     		workersString = String.join(", ", t.getAssignedTo());
-    		
+
     		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + PriorityOfTask(t.getStartDate())+
 					"\n Task: " + t.getTaskString() +
 					"\n Assigned to: " + workersString +
@@ -128,10 +126,9 @@ public class TaskModel{
 					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
 					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
 					"\n Status: " + taskStatus() + "\n";
-    		stringbuilder += "-----------------------------------------------------------------\n";
     	}
-        
-        return stringbuilder ;
+    	
+    	return stringbuilder;
     }
 //  ======================================================================================     
     public String getTaskById(int id) {	

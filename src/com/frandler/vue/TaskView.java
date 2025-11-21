@@ -4,6 +4,8 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
+import com.frandler.tache.Task.Priority;
+import com.frandler.tache.Task.TaskStatus;
 
 public class TaskView {
 
@@ -21,6 +23,8 @@ public class TaskView {
 	    String completeNameString = "";
 	    int duration;
 	    String startAt = null;
+	    Priority priority = null;
+	    TaskStatus status = null;
 	   
 	    
 	    System.out.println("\n==== (+) NEW TASK ====");
@@ -58,10 +62,9 @@ public class TaskView {
 	    duration = mscanner.nextInt();
 	    mscanner.nextLine();
 	    
-	    System.out.print("Start date (format dd-MM-yyyy HH:mm) : ");
+	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
 	    startAt = mscanner.nextLine();
-	    //model.saveTasksToJson("tasks.json");
-	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
+	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt, priority, status);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
 	    }
@@ -80,14 +83,14 @@ public class TaskView {
 	        int idTaskInt = mscanner.nextInt();	    
 	    	mscanner.nextLine(); 
 
-	    		System.out.println(tskController.getTaskById(idTaskInt));
+	    	System.out.println(tskController.getTaskById(idTaskInt));
 	        
 	    } catch (InputMismatchException e) {
 	        System.err.println("❌ ID task should be a number");
 	        mscanner.nextLine(); 
 	    }
 	}
-//	15-11-2025 12:30
+//	2025-11-15 12:30
 //-----------------------------------------------------------------------------------------
 	public void removeTaskById() {
 		int idTaskInt = -1;

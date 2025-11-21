@@ -3,6 +3,8 @@ package com.frandler.controller;
 import java.util.ArrayList;
 
 import com.frandler.model.TaskModel;
+import com.frandler.tache.Task.Priority;
+import com.frandler.tache.Task.TaskStatus;
 
 public class TaskController {
 	
@@ -13,7 +15,7 @@ public class TaskController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration, String startAt) {
+	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration, String startAt, Priority priority, TaskStatus status) {
 	        String errorString = "";
 	        String tmpTaskString = task.trim();
 	        
