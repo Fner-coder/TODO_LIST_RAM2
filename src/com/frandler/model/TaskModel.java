@@ -23,7 +23,7 @@ public class TaskModel{
 	Task task = new Task();
 	int compt = 1;
 	
-	private static final String FILE_PATH = "C:/Users/dell/TODO_LIST_RAM2/target/tasks.json";
+	private static final String FILE_PATH = "C:/Users/dell/TODO_LIST_RAM2/data/tasks.json";
 	
 	
 //	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
@@ -37,7 +37,7 @@ public class TaskModel{
 	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
 		int newId = compt++;
 		Task newTask = new Task(newId, assignedTo, taskString, duration, startAt);
-		File folder = new File("C:/Users/dell/TODO_LIST_RAM2/target");
+		File folder = new File("C:/Users/dell/TODO_LIST_RAM2/data");
 	    if (!folder.exists()) {
 	        folder.mkdirs();
 	    }
@@ -118,7 +118,7 @@ public class TaskModel{
 //	                }
 //			}
     		
-    		// ameliorate version of listing people into the list "assignedTo" 
+    		// ameliorated version of listing people into the list "assignedTo" 
     		String workersString = "";
     		workersString = String.join(", ", t.getAssignedTo());
 
