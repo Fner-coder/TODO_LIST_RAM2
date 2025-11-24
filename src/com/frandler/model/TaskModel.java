@@ -55,9 +55,6 @@ public class TaskModel{
        LocalDateTime nowDateTime = LocalDateTime.now();
        long hoursDiff = ChronoUnit.HOURS.between(nowDateTime, startDate);
        
-       if ((hoursDiff <= 24 && hoursDiff >= 0) && startDate.isAfter(nowDateTime)) {
-    	   return Priority.HIGH;
-       }
        if ((hoursDiff > 24 && hoursDiff <=48) && startDate.isAfter(nowDateTime)) {
     	   return Priority.MEDIUM;
        }
@@ -65,24 +62,30 @@ public class TaskModel{
     	   return Priority.LOW;
        }
        else {
-    	   return Priority.HIGH;
+//    	   if ((hoursDiff <= 24 && hoursDiff >= 0) && startDate.isAfter(nowDateTime)) {
+        	  return Priority.HIGH;
+//           }
        }
 }
     
-   public TaskStatus taskStatus() {
+   public String taskStatus() {
 	   TaskStatus status = null;
 	   for (Task t : masterTaskList) {
 		   LocalDateTime startDate = dateUtils.parseDateTime(t.getStartDate());
 		   LocalDateTime endDate = dateUtils.calculateEndDate(t.getStartDate(), t.getDuree());
-//	       LocalDateTime nowDateTime = LocalDateTime.now();
-	       if ((startDate.isBefore(LocalDateTime.now())) && (endDate.isBefore(LocalDateTime.now())))
-	    	   return TaskStatus.Done;
-	       if ((startDate.isAfter(LocalDateTime.now())) && (endDate.isAfter(LocalDateTime.now())))
-	    	   return TaskStatus.To_do;
-	       if ((startDate.isBefore(LocalDateTime.now()) && endDate.isAfter(LocalDateTime.now())) || (startDate == LocalDateTime.now() && endDate.isAfter(LocalDateTime.now())))
-	    	   return TaskStatus.In_progress;
+	       if ((startDate.isBefore(LocalDateTime.now())) && (endDate.isBefore(LocalDateTime.now()))) {
+	    	   return TaskStatus.Done.toString();
+	       }
+	       else if ((startDate.isAfter(LocalDateTime.now())) && (endDate.isAfter(LocalDateTime.now()))) {
+	    	   return TaskStatus.To_do.toString();
+	       }
+	       else {
+	    	   //((startDate.isBefore(LocalDateTime.now()) && endDate.isAfter(LocalDateTime.now())) || (startDate == LocalDateTime.now() && endDate.isAfter(LocalDateTime.now())))
+	    	   return TaskStatus.In_progress.toString();
+	       }
+	    	   
 	   }
-	   return status;
+	   return null;
        
    }
 // cancel task Method
@@ -126,6 +129,7 @@ public class TaskModel{
 					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
 					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
 					"\n Status: " + taskStatus() + "\n";
+    		stringbuilder += "-------------------------------------------";
     	}
     	
     	return stringbuilder;

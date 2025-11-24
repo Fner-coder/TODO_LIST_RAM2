@@ -15,7 +15,7 @@ public class TaskController {
 		// TODO Auto-generated constructor stub
 	}
 	
-	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration, String startAt, Priority priority, TaskStatus status) {
+	 public String addTask(ArrayList<String> completeNameArrayList, String task, int duration, String startAt) {
 	        String errorString = "";
 	        String tmpTaskString = task.trim();
 	        

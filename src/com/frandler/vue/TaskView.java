@@ -64,7 +64,7 @@ public class TaskView {
 	    
 	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
 	    startAt = mscanner.nextLine();
-	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt, priority, status);
+	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
 	    }
