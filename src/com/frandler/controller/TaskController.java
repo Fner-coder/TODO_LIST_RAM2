@@ -70,16 +70,16 @@ public class TaskController {
 	}
 	 
 //	 ---------------------------------------------------------------------
-	 public String cancelTask(int tmpId) {
-		 String errorString = "Task("+ tmpId +") cancelled";
-			if (tskmodel.cancelTask(tmpId) == null){
-				errorString = "The task " + tmpId + " not found";
-			}
-			if (tmpId < 0) {
-				errorString = "ID Invalid!";
-			}
-		return errorString;
-	}
+//	 public String cancelTask(int tmpId) {
+//		 String errorString = "Task("+ tmpId +") cancelled";
+//			if (tskmodel.cancelTask(tmpId) == null){
+//				errorString = "The task " + tmpId + " not found";
+//			}
+//			if (tmpId < 0) {
+//				errorString = "ID Invalid!";
+//			}
+//		return errorString;
+//	}
 
 }
 
