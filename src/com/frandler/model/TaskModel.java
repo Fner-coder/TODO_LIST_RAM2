@@ -25,14 +25,6 @@ public class TaskModel{
 	
 	private static final String FILE_PATH = "C:/Users/dell/TODO_LIST_RAM2/data/tasks.json";
 	
-	
-//	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
-//		int newId = compt++;
-//        Task newTask = new Task(newId, assignedTo, taskString, duration, startAt);
-//        masterTaskList.add(newTask);
-//        return newId;
-//    }
-	
 	// SAVE ALL TASK IN JSON
 	public int addTask(ArrayList<String> assignedTo, String taskString, int duration, String startAt) {
 		int newId = compt++;
@@ -48,14 +40,12 @@ public class TaskModel{
 	    }
 		return newId;
 	}
-	
- // PRIORITY METHOD
+//========================================================================================	
    public Priority PriorityOfTask(Task task) {
        LocalDateTime startDate = dateUtils.parseDateTime(task.getStartDate());
-       LocalDateTime now = LocalDateTime.now();
        TaskStatus status = task.getStatus();
        
-       long hoursDiff = ChronoUnit.HOURS.between(now, startDate);
+       long hoursDiff = ChronoUnit.HOURS.between(LocalDateTime.now(), startDate);
        
        if (status == TaskStatus.To_do) {
     	   if (hoursDiff <= 24 && hoursDiff >= 0) {
@@ -70,23 +60,22 @@ public class TaskModel{
        }
 	   return Priority.NONE;
 }
-    
+ //========================================================================================   
    public TaskStatus taskStatus(Task task) {
-//	   for (Task t : masterTaskList) {
 		   LocalDateTime startDate = dateUtils.parseDateTime(task.getStartDate());
 		   LocalDateTime endDate = dateUtils.calculateEndDate(task.getStartDate(), task.getDuree());
-		   LocalDateTime now = LocalDateTime.now();
 		   
-		   if (endDate.isBefore(now)) {
+		   if (endDate.isBefore(LocalDateTime.now())) {
 			   return TaskStatus.Done;
 		   }
-		   else if(startDate.isAfter(now)){
+		   else if(startDate.isAfter(LocalDateTime.now())){
 			   return TaskStatus.To_do;
 		   }
 		   else {
 			   return TaskStatus.In_progress;
 		   }
    }
+ //========================================================================================
 // cancel task Method
 //   public String cancelTask(int id) {
 //	   String stringbuilder = "";
@@ -104,63 +93,35 @@ public class TaskModel{
 //			}
 //	   return stringbuilder;
 //   }
-   
-// GET LIST OF TASKS METHOD ==============================================================
-//    public String getTasks() {
-//    	String stringbuilder = "";
-//    	
-//    	for (Task t : masterTaskList) {
-//    		
-//    		TaskStatus status = taskStatus(t);
-//    	    Priority priority = PriorityOfTask(t);
-//    		
-//    	    t.setStatus(status);
-//    	    t.setPriority(priority);
-//    	    
-////			- ArrayList<String> assignedTo = t.getAssignedTo();
-////    		for(int i = 0; i < assignedTo.size(); i++) {
-////				workersString += assignedTo.get(i);
-////				 if (i < assignedTo.size() - 1) {
-////					 workersString += ", ";
-////	                }
-////			}
-//    		// ameliorated version of listing people into the list "assignedTo" 
-//    		String workersString = "";
-//    		workersString = String.join(", ", t.getAssignedTo());
-//
-//    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + t.getPriority() +
-//					"\n Task: " + t.getTaskString() +
-//					"\n Assigned to: " + workersString +
-//					"\n Start Date: " + t.getStartDate() +
-//					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
-//					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
-//					"\n Status: " + t.getStatus()+ "\n";
-//    		stringbuilder += "-------------------------------------------";
-//    	}
-//    	
-//    	return stringbuilder;
-//    }
-//  ======================================================================================     
-    public String getTaskById(int id) {	
-    	String stringbuilder = "";
+ //========================================================================================
+     public String getTaskById(int id) {	
+    	 StringBuilder stb = new StringBuilder();
 
-    	for(Task t: masterTaskList) {   
-    		String workersString = "";
+    	for(Task t: masterTaskList) {
+    		
+    		TaskStatus status = taskStatus(t);
+    	    Priority priority = PriorityOfTask(t);
+    		
+    	    t.setStatus(status);
+    	    t.setPriority(priority);
     		
                if (id == t.getId()) {
-            	   stringbuilder =" Task: " + t.getTaskString() +
-            			"\n Priority: " + t.getPriority()+
-       					"\n Assigned to: " + workersString +
-       					"\n Start Date: " + t.getStartDate() +
-       					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
-       					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
-       					"\n Status: " + t.getStatus() + "\n";
+            	   String workersString = String.join(", ", t.getAssignedTo());
+
+                   stb.append(" ID_task: ").append(t.getId()).append("\n")
+                     .append(" Priority: ").append(t.getPriority()).append("\n")
+                     .append(" Task: ").append(t.getTaskString()).append("\n")
+                     .append(" Assigned to: ").append(workersString).append("\n")
+                     .append(" Start Date: ").append(t.getStartDate()).append("\n")
+                     .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+                     .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
+                     .append(" Status: ").append(t.getStatus()).append("\n")
+                     .append("-----------------------------------------------------------------\n");
                }
-           		stringbuilder += "-----------------------------------------------------------------\n";
-    	}   
-		return stringbuilder;
+           }
+    	return stb.toString();
 	}
-    
+//========================================================================================
     public boolean removeTaskById(int id) {
     	for (Task t : masterTaskList) {
 			if (id == t.getId()) {
@@ -170,8 +131,7 @@ public class TaskModel{
 		}
     	return false;
     }
-    
-////  GET LIST OF TASKS METHOD with a better StringBuilder
+//======================================================================================    
     public String getTasks() {
         StringBuilder stb = new StringBuilder();
 
@@ -183,7 +143,7 @@ public class TaskModel{
     	    t.setStatus(status);
     	    t.setPriority(priority);
     	    
-		// ameliorated version of listing people into the list "assignedTo"
+//		ameliorated version of listing people into the list "assignedTo"
     	    String workersString = String.join(", ", t.getAssignedTo());
 
             stb.append(" ID_task: ").append(t.getId()).append("\n")
@@ -192,12 +152,10 @@ public class TaskModel{
               .append(" Assigned to: ").append(workersString).append("\n")
               .append(" Start Date: ").append(t.getStartDate()).append("\n")
               .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
-              .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
+              .append(" End Date: ").append(dateUtils.formatDateTime(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()))).append("\n")
+              .append(" Status: ").append(t.getStatus()).append("\n")
               .append("-----------------------------------------------------------------\n");
         }
-
         return stb.toString();
     }
-	
-
 } 

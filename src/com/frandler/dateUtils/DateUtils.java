@@ -5,14 +5,15 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
-	    public DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	    public DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 	    
 	    public LocalDateTime parseDateTime(String dateTimeStr) {
 	        return LocalDateTime.parse(dateTimeStr, DATE_TIME_FORMATTER);
 	    }
 	    
-	    public String formatDateTime(String dateTime) {
-	        return dateTime.formatted(DATE_TIME_FORMATTER);
+	    public String formatDateTime(LocalDateTime dateTime) {
+//	        return dateTime.formatted(DATE_TIME_FORMATTER);
+	    	return dateTime.format(DATE_TIME_FORMATTER);
 	    }
 	    
 	    public LocalDateTime calculateEndDate(String startAt, int durationInMinutes) {

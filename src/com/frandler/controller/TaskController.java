@@ -3,8 +3,6 @@ package com.frandler.controller;
 import java.util.ArrayList;
 
 import com.frandler.model.TaskModel;
-import com.frandler.tache.Task.Priority;
-import com.frandler.tache.Task.TaskStatus;
 
 public class TaskController {
 	
@@ -80,6 +78,20 @@ public class TaskController {
 //			}
 //		return errorString;
 //	}
+	 
+//	 public String isValidDate(String tmpDate) {
+//		 boolean isValidate = tskmodel.isValidDate(tmpDate);
+//		 while (!isValidate) {
+//			 return "Date format invalid!";
+//		 }
+//		 return tmpDate;
+//		 if (isValidate) {
+//			return tmpDate;
+//		}
+//		 else {
+//			return "Date format invalid!";
+//		}
+//	 }
 
 }
 

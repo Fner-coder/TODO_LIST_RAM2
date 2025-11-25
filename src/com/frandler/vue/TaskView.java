@@ -1,15 +1,17 @@
 package com.frandler.vue;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
-import com.frandler.tache.Task.Priority;
-import com.frandler.tache.Task.TaskStatus;
+import com.frandler.dateUtils.DateUtils;
 
 public class TaskView {
 
 	TaskController tskController = new TaskController();
+	DateUtils dateUtils = new DateUtils();	
 	private Scanner mscanner = new Scanner(System.in);
 	public TaskView() {
 		// TODO Auto-generated constructor stub
@@ -21,11 +23,8 @@ public class TaskView {
 	    int nbPeople;
 	    String taskString = "";
 	    String completeNameString = "";
-	    int duration;
-	    String startAt = null;
-	    Priority priority = null;
-	    TaskStatus status = null;
-	   
+	    int duration = 0;
+	    String startDate = "";
 	    
 	    System.out.println("\n==== (+) NEW TASK ====");
 	    while (taskString.isEmpty()) {
@@ -60,11 +59,36 @@ public class TaskView {
 	    
 	    System.out.println("Duration of task - ('" + taskString + "') in minute ?");
 	    duration = mscanner.nextInt();
-	    mscanner.nextLine();
+	    try {
+	    	while (duration <= 0) {
+		    	System.err.print("Invalid number..."); System.out.println("Try again :");
+			    duration = mscanner.nextInt();
+			    mscanner.nextLine();
+			}
+		} catch (InputMismatchException e) {
+			System.err.println("❌ Duration should be a number");
+			mscanner.nextLine();
+		}
 	    
-	    System.out.print("Start date (format yyyy-MM-dd HH:mm) : ");
-	    startAt = mscanner.nextLine();
-	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startAt);
+	    
+	    System.out.print("Start date (format dd-MM-yyyy HH:mm) \n");
+
+	    boolean valid = false;
+
+	    while (!valid) {
+	        startDate = mscanner.nextLine();
+	        mscanner.nextLine();
+	        try {
+	            // Tente de parser avec ton formatter
+	            LocalDateTime.parse(startDate, dateUtils.DATE_TIME_FORMATTER);
+	            valid = true;
+	        } catch (DateTimeParseException e) {
+	            System.err.print("❌ Date format invalid! ");
+	        }
+	        mscanner.nextLine();
+	    }
+	    
+	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startDate);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);
 	    }
