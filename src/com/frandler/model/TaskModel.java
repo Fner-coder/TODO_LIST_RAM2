@@ -107,6 +107,7 @@ public class TaskModel{
 // GET LIST OF TASKS METHOD ==============================================================
     public String getTasks() {
     	String stringbuilder = "";
+    	
     	for (Task t : masterTaskList) {
     		
     		TaskStatus status = taskStatus(t);
@@ -122,14 +123,11 @@ public class TaskModel{
 //					 workersString += ", ";
 //	                }
 //			}
-//    	   2025-12-12 12:30 
-//    	    2025-11-24 20:10
-//    	    2025-11-24 20:07
     		// ameliorated version of listing people into the list "assignedTo" 
     		String workersString = "";
     		workersString = String.join(", ", t.getAssignedTo());
 
-    		stringbuilder =" ID_task: " + t.getId() +  " - priority: " + t.getPriority() +
+    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + t.getPriority() +
 					"\n Task: " + t.getTaskString() +
 					"\n Assigned to: " + workersString +
 					"\n Start Date: " + t.getStartDate() +
@@ -175,15 +173,17 @@ public class TaskModel{
 ////  GET LIST OF TASKS METHOD with a better StringBuilder
 //    public String getTasks() {
 //        StringBuilder stb = new StringBuilder();
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-
-//        for (Task t : mastesTaskList) {
-//            // WORKERS LIST WITH String.join
-//            String workersString = String.join(", ", t.getAssignedTo());
 //
-//            // USE THE DATAS'TASK
-//            LocalDateTime startDate = LocalDateTime.parse(t.getStartDate(), formatter);
-//            LocalDateTime endDate = calculateEndDate(t.getStartDate(), t.getDuree());
+//        for (Task t : masterTaskList) {
+//        	
+//        	TaskStatus status = taskStatus(t);
+//    	    Priority priority = PriorityOfTask(t);
+//    		
+//    	    t.setStatus(status);
+//    	    t.setPriority(priority);
+//
+//    	    String workersString = String.join(", ", t.getAssignedTo());
+//
 //
 //            stb.append(" ID_task: ").append(t.getId()).append("\n")
 //              .append(" Task: ").append(t.getTaskString()).append("\n")
