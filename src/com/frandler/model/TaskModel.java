@@ -104,41 +104,42 @@ public class TaskModel{
 //			}
 //	   return stringbuilder;
 //   }
+   
 // GET LIST OF TASKS METHOD ==============================================================
-    public String getTasks() {
-    	String stringbuilder = "";
-    	
-    	for (Task t : masterTaskList) {
-    		
-    		TaskStatus status = taskStatus(t);
-    	    Priority priority = PriorityOfTask(t);
-    		
-    	    t.setStatus(status);
-    	    t.setPriority(priority);
-    	    
-//			- ArrayList<String> assignedTo = t.getAssignedTo();
-//    		for(int i = 0; i < assignedTo.size(); i++) {
-//				workersString += assignedTo.get(i);
-//				 if (i < assignedTo.size() - 1) {
-//					 workersString += ", ";
-//	                }
-//			}
-    		// ameliorated version of listing people into the list "assignedTo" 
-    		String workersString = "";
-    		workersString = String.join(", ", t.getAssignedTo());
-
-    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + t.getPriority() +
-					"\n Task: " + t.getTaskString() +
-					"\n Assigned to: " + workersString +
-					"\n Start Date: " + t.getStartDate() +
-					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
-					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
-					"\n Status: " + t.getStatus()+ "\n";
-    		stringbuilder += "-------------------------------------------";
-    	}
-    	
-    	return stringbuilder;
-    }
+//    public String getTasks() {
+//    	String stringbuilder = "";
+//    	
+//    	for (Task t : masterTaskList) {
+//    		
+//    		TaskStatus status = taskStatus(t);
+//    	    Priority priority = PriorityOfTask(t);
+//    		
+//    	    t.setStatus(status);
+//    	    t.setPriority(priority);
+//    	    
+////			- ArrayList<String> assignedTo = t.getAssignedTo();
+////    		for(int i = 0; i < assignedTo.size(); i++) {
+////				workersString += assignedTo.get(i);
+////				 if (i < assignedTo.size() - 1) {
+////					 workersString += ", ";
+////	                }
+////			}
+//    		// ameliorated version of listing people into the list "assignedTo" 
+//    		String workersString = "";
+//    		workersString = String.join(", ", t.getAssignedTo());
+//
+//    		stringbuilder +=" ID_task: " + t.getId() +  " - priority: " + t.getPriority() +
+//					"\n Task: " + t.getTaskString() +
+//					"\n Assigned to: " + workersString +
+//					"\n Start Date: " + t.getStartDate() +
+//					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
+//					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
+//					"\n Status: " + t.getStatus()+ "\n";
+//    		stringbuilder += "-------------------------------------------";
+//    	}
+//    	
+//    	return stringbuilder;
+//    }
 //  ======================================================================================     
     public String getTaskById(int id) {	
     	String stringbuilder = "";
@@ -171,31 +172,40 @@ public class TaskModel{
     }
     
 ////  GET LIST OF TASKS METHOD with a better StringBuilder
-//    public String getTasks() {
-//        StringBuilder stb = new StringBuilder();
-//
-//        for (Task t : masterTaskList) {
-//        	
-//        	TaskStatus status = taskStatus(t);
-//    	    Priority priority = PriorityOfTask(t);
-//    		
-//    	    t.setStatus(status);
-//    	    t.setPriority(priority);
-//
-//    	    String workersString = String.join(", ", t.getAssignedTo());
-//
-//
-//            stb.append(" ID_task: ").append(t.getId()).append("\n")
-//              .append(" Task: ").append(t.getTaskString()).append("\n")
-//              .append(" Assigned to: ").append(workersString).append("\n")
-//              .append(" Start Date: ").append(startDate.format(formatter)).append("\n")
-//              .append(" Duration: ").append(formatDuration(t.getDuree())).append("\n")
-//              .append(" End Date: ").append(endDate.format(formatter)).append("\n")
-//              .append("-----------------------------------------------------------------\n");
-//        }
-//
-//        return sb.toString();
-//    }
+    public String getTasks() {
+        StringBuilder stb = new StringBuilder();
+
+        for (Task t : masterTaskList) {
+        	
+        	TaskStatus status = taskStatus(t);
+    	    Priority priority = PriorityOfTask(t);
+    		
+    	    t.setStatus(status);
+    	    t.setPriority(priority);
+    	    
+//		ArrayList<String> assignedTo = t.getAssignedTo();
+//		for(int i = 0; i < assignedTo.size(); i++) {
+//			workersString += assignedTo.get(i);
+//			 if (i < assignedTo.size() - 1) {
+//				 workersString += ", ";
+//                }
+//		}
+    	    
+		// ameliorated version of listing people into the list "assignedTo"
+    	    String workersString = String.join(", ", t.getAssignedTo());
+
+            stb.append(" ID_task: ").append(t.getId()).append("\n")
+              .append(" Priority: ").append(t.getPriority()).append("\n")
+              .append(" Task: ").append(t.getTaskString()).append("\n")
+              .append(" Assigned to: ").append(workersString).append("\n")
+              .append(" Start Date: ").append(t.getStartDate()).append("\n")
+              .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+              .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
+              .append("-----------------------------------------------------------------\n");
+        }
+
+        return stb.toString();
+    }
 	
 
 } 
