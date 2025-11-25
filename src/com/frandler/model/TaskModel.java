@@ -183,14 +183,6 @@ public class TaskModel{
     	    t.setStatus(status);
     	    t.setPriority(priority);
     	    
-//		ArrayList<String> assignedTo = t.getAssignedTo();
-//		for(int i = 0; i < assignedTo.size(); i++) {
-//			workersString += assignedTo.get(i);
-//			 if (i < assignedTo.size() - 1) {
-//				 workersString += ", ";
-//                }
-//		}
-    	    
 		// ameliorated version of listing people into the list "assignedTo"
     	    String workersString = String.join(", ", t.getAssignedTo());
 
