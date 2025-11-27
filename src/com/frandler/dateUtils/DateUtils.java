@@ -12,7 +12,6 @@ public class DateUtils {
 	    }
 	    
 	    public String formatDateTime(LocalDateTime dateTime) {
-//	        return dateTime.formatted(DATE_TIME_FORMATTER);
 	    	return dateTime.format(DATE_TIME_FORMATTER);
 	    }
 	    

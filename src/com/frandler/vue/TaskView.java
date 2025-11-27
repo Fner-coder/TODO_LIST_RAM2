@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
 import com.frandler.dateUtils.DateUtils;
+import com.frandler.model.TaskModel;
 
 public class TaskView {
 
@@ -24,7 +25,7 @@ public class TaskView {
 	    String taskString = "";
 	    String completeNameString = "";
 	    int duration = 0;
-	    String startDate = "";
+	    String startDate;
 	    
 	    System.out.println("\n==== (+) NEW TASK ====");
 	    while (taskString.isEmpty()) {
@@ -70,24 +71,24 @@ public class TaskView {
 			mscanner.nextLine();
 		}
 	    
+	    mscanner.nextLine();
 	    
-	    System.out.print("Start date (format dd-MM-yyyy HH:mm) \n");
+		while (true) {
+			System.out.print("Start date (dd-MM-yyyy HH:mm): ");
+		    startDate = mscanner.nextLine();
 
-	    boolean valid = false;
-
-	    while (!valid) {
-	        startDate = mscanner.nextLine();
-	        mscanner.nextLine();
-	        try {
-	            // Tente de parser avec ton formatter
-	            LocalDateTime.parse(startDate, dateUtils.DATE_TIME_FORMATTER);
-	            valid = true;
-	        } catch (DateTimeParseException e) {
-	            System.err.print("❌ Date format invalid! ");
-	        }
-	        mscanner.nextLine();
-	    }
-	    
+		    if (startDate == null || startDate.isBlank()) {
+		        System.out.println("Start date requiered: ");
+		        continue;
+		    }
+		    try {
+		        LocalDateTime.parse(startDate, dateUtils.DATE_TIME_FORMATTER);
+		        break;
+		    } catch (DateTimeParseException e) {
+		        System.err.println("❌ Date format invalid! Try again...");
+		    }
+		}
+		
 	    var res = tskController.addTask(completeNameArrayList, taskString, duration, startDate);
 	    if (!res.isEmpty()) {
 	        System.err.println(res);

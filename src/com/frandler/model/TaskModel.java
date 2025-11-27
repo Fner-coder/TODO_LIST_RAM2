@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import com.frandler.dateUtils.DateUtils;
 import com.frandler.tache.Task;
@@ -34,6 +36,7 @@ public class TaskModel{
 	        folder.mkdirs();
 	    }
 	    try (FileWriter writer = new FileWriter(FILE_PATH)) {
+	    	updateTaskStatusAndPriority(newTask);
 	    	masterTaskList.add(newTask);
 	        gson.toJson(masterTaskList, writer);
 	    } catch (IOException e) {
@@ -61,19 +64,23 @@ public class TaskModel{
 	   return Priority.NONE;
 }
  //========================================================================================   
-   public TaskStatus taskStatus(Task task) {
+   public void updateTaskStatusAndPriority(Task task) {
 		   LocalDateTime startDate = dateUtils.parseDateTime(task.getStartDate());
 		   LocalDateTime endDate = dateUtils.calculateEndDate(task.getStartDate(), task.getDuree());
 		   
-		   if (endDate.isBefore(LocalDateTime.now())) {
-			   return TaskStatus.Done;
+		   TaskStatus status;
+		   if (endDate.isBefore(LocalDateTime.now()) && endDate.isBefore(LocalDateTime.now())) {
+			   status = TaskStatus.Done;
 		   }
 		   else if(startDate.isAfter(LocalDateTime.now())){
-			   return TaskStatus.To_do;
+			   status = TaskStatus.To_do;
 		   }
 		   else {
-			   return TaskStatus.In_progress;
+			   status = TaskStatus.In_progress;
 		   }
+		   task.setStatus(status);
+		   Priority priority = PriorityOfTask(task);
+		   task.setPriority(priority);
    }
  //========================================================================================
 // cancel task Method
@@ -98,12 +105,7 @@ public class TaskModel{
     	 StringBuilder stb = new StringBuilder();
 
     	for(Task t: masterTaskList) {
-    		
-    		TaskStatus status = taskStatus(t);
-    	    Priority priority = PriorityOfTask(t);
-    		
-    	    t.setStatus(status);
-    	    t.setPriority(priority);
+//    		updateTaskStatusAndPriority(t);
     		
                if (id == t.getId()) {
             	   String workersString = String.join(", ", t.getAssignedTo());
@@ -136,14 +138,9 @@ public class TaskModel{
         StringBuilder stb = new StringBuilder();
 
         for (Task t : masterTaskList) {
+//        	updateTaskStatusAndPriority(t);
         	
-        	TaskStatus status = taskStatus(t);
-    	    Priority priority = PriorityOfTask(t);
-    		
-    	    t.setStatus(status);
-    	    t.setPriority(priority);
-    	    
-//		ameliorated version of listing people into the list "assignedTo"
+//			ameliorated version of listing people into the list "assignedTo"
     	    String workersString = String.join(", ", t.getAssignedTo());
 
             stb.append(" ID_task: ").append(t.getId()).append("\n")
@@ -155,7 +152,11 @@ public class TaskModel{
               .append(" End Date: ").append(dateUtils.formatDateTime(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()))).append("\n")
               .append(" Status: ").append(t.getStatus()).append("\n")
               .append("-----------------------------------------------------------------\n");
+            
         }
+        
         return stb.toString();
     }
+//===============================================================================    
+    
 } 
