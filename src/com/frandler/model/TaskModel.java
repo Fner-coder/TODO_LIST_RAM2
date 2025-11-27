@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import com.frandler.dateUtils.DateUtils;
 import com.frandler.tache.Task;
@@ -84,29 +82,39 @@ public class TaskModel{
    }
  //========================================================================================
 // cancel task Method
-//   public String cancelTask(int id) {
-//	   String stringbuilder = "";
-//	   for (Task t : masterTaskList) {
-//			if (id == t.getId()) {
-//				stringbuilder =" Task: " + t.getTaskString() +
-//            			" Priority: " + PriorityOfTask(t.getStartDate())+
-//       					"\n Assigned to: " + String.join(", ", t.getAssignedTo()) +
-//       					"\n Start Date: " + t.getStartDate() +
-//       					"\n Duration: " + dateUtils.formatDuration(t.getDuree()) +
-//       					"\n End Date: " + dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()) +
-//       					"\n Status: " + TaskStatus.Cancelled + "\n";
-//               }
-//           		stringbuilder += "-----------------------------------------------------------------\n";
-//			}
-//	   return stringbuilder;
-//   }
+   public String cancelTask(int id) {
+	   StringBuilder stb = new StringBuilder();
+	   for (Task t : masterTaskList) {
+		   TaskStatus status;
+		   Priority priority;
+		   
+			if (id == t.getId()) {
+				status = TaskStatus.Cancelled;
+				priority = Priority.NONE;
+				
+				t.setStatus(status);
+				t.setPriority(priority);
+				
+				String workersString = String.join(", ", t.getAssignedTo());
+
+                stb.append(" ID_task: ").append(t.getId()).append("\n")
+                  .append(" Priority: ").append(priority).append("\n")
+                  .append(" Task: ").append(t.getTaskString()).append("\n")
+                  .append(" Assigned to: ").append(workersString).append("\n")
+                  .append(" Start Date: ").append(t.getStartDate()).append("\n")
+                  .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+                  .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
+                  .append(" Status: ").append(status).append("\n")
+                  .append("-----------------------------------------------------------------\n");
+            }
+			}
+	   return stb.toString();
+   }
  //========================================================================================
      public String getTaskById(int id) {	
     	 StringBuilder stb = new StringBuilder();
 
     	for(Task t: masterTaskList) {
-//    		updateTaskStatusAndPriority(t);
-    		
                if (id == t.getId()) {
             	   String workersString = String.join(", ", t.getAssignedTo());
 
@@ -138,8 +146,6 @@ public class TaskModel{
         StringBuilder stb = new StringBuilder();
 
         for (Task t : masterTaskList) {
-//        	updateTaskStatusAndPriority(t);
-        	
 //			ameliorated version of listing people into the list "assignedTo"
     	    String workersString = String.join(", ", t.getAssignedTo());
 

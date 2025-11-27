@@ -7,7 +7,6 @@ import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
 import com.frandler.dateUtils.DateUtils;
-import com.frandler.model.TaskModel;
 
 public class TaskView {
 
@@ -135,23 +134,23 @@ public class TaskView {
 		
 	}
 	
-//	public void cancelTask() {
-//		int idTaskInt = -1;
-//		try {
-//			System.out.print("------------------------------------------\nPlease enter ID of task : ");
-//			idTaskInt = mscanner.nextInt();
-//	    	
-//			var err = tskController.cancelTask(idTaskInt); 
-//			if (err != "") {
-//				System.err.println(err);
-//			}
-//
-//		} catch (InputMismatchException e) {
-//			System.err.println("ID task should be a number");
-//			mscanner.nextLine();
-//		}
-//		
-//	}
+	public void cancelTask() {
+		int idTaskInt = -1;
+		try {
+			System.out.print("------------------------------------------\nPlease enter ID of task : ");
+			idTaskInt = mscanner.nextInt();
+	    	
+			var err = tskController.cancelTask(idTaskInt); 
+			if (err != "") {
+				System.err.println(err);
+			}
+
+		} catch (InputMismatchException e) {
+			System.err.println("ID task should be a number");
+			mscanner.nextLine();
+		}
+		
+	}
 	
 
 //-----------------------------------------------------------------------------------------	
@@ -189,7 +188,7 @@ public class TaskView {
                     	  getTaskbyId();
                             break;
                       case 4:
-                    	  //cancelTask();
+                    	  cancelTask();
                     	  break;
                       case 5:
                     	  removeTaskById();
