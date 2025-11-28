@@ -89,7 +89,7 @@ public class Task {
 	public Task() {
 		// TODO Auto-generated constructor stub
 	}
-	 
+	
 	public Task(int id, ArrayList<String> assignedTo , String taskString, int duration, String startAt){
 		this.id = id;
 		this.assignedTo = assignedTo;

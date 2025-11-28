@@ -179,7 +179,7 @@ public class TaskView {
                           break;
                       case 2:
                     	  try {
-                              getTasks();
+//                              getTasks();
                           } catch (Exception e) {
                               System.err.println("Error while listing tasks: " + e.getMessage());
                           }
@@ -211,4 +211,5 @@ public class TaskView {
       mscanner.close();
       	
 	}
+
 }

@@ -14,10 +14,10 @@ import com.frandler.tache.Task.TaskStatus;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+
 public class TaskModel{
 	
-	Gson gson = new GsonBuilder().setPrettyPrinting().create();
-	//private static final String String = null;
+	private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 	private DateUtils dateUtils = new DateUtils();	
 	private ArrayList<Task> masterTaskList = new ArrayList<Task>();
 	Task task = new Task();
@@ -34,13 +34,100 @@ public class TaskModel{
 	        folder.mkdirs();
 	    }
 	    try (FileWriter writer = new FileWriter(FILE_PATH)) {
+	    	
 	    	updateTaskStatusAndPriority(newTask);
+	    	
 	    	masterTaskList.add(newTask);
 	        gson.toJson(masterTaskList, writer);
 	    } catch (IOException e) {
 	    }
 		return newId;
 	}
+
+//======================================================================================    
+    public String getTasks() {
+        StringBuilder stb = new StringBuilder();
+
+        for (Task t : masterTaskList) {
+
+        	String workersString = String.join(", ", t.getAssignedTo());
+
+            stb.append(" ID_task: ").append(t.getId()).append("\n")
+              .append(" Priority: ").append(t.getPriority()).append("\n")
+              .append(" Task: ").append(t.getTaskString()).append("\n")
+              .append(" Assigned to: ").append(workersString).append("\n")
+              .append(" Start Date: ").append(t.getStartDate()).append("\n")
+              .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+              .append(" End Date: ").append(dateUtils.formatDateTime(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()))).append("\n")
+              .append(" Status: ").append(t.getStatus()).append("\n")
+              .append("-----------------------------------------------------------------\n");
+            
+        }
+        
+        return stb.toString();
+    }
+
+    //========================================================================================
+    public String getTaskById(int id) {	
+   	 StringBuilder stb = new StringBuilder();
+
+   	for(Task t: masterTaskList) {
+              if (id == t.getId()) {
+           	   String workersString = String.join(", ", t.getAssignedTo());
+
+                  stb.append(" ID_task: ").append(t.getId()).append("\n")
+                    .append(" Priority: ").append(t.getPriority()).append("\n")
+                    .append(" Task: ").append(t.getTaskString()).append("\n")
+                    .append(" Assigned to: ").append(workersString).append("\n")
+                    .append(" Start Date: ").append(t.getStartDate()).append("\n")
+                    .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+                    .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
+                    .append(" Status: ").append(t.getStatus()).append("\n")
+                    .append("-----------------------------------------------------------------\n");
+              }
+          }
+   	return stb.toString();
+	}
+   
+//========================================================================================
+    public String cancelTask(int id) {
+ 	   StringBuilder stb = new StringBuilder();
+ 	   for (Task t : masterTaskList) {
+ 		   TaskStatus status;
+ 		   Priority priority;
+ 		   
+ 			if (id == t.getId()) {
+ 				status = TaskStatus.Cancelled;
+ 				priority = Priority.NONE;
+ 				
+ 				t.setStatus(status);
+ 				t.setPriority(priority);
+ 				
+ 				String workersString = String.join(", ", t.getAssignedTo());
+
+                 stb.append(" ID_task: ").append(t.getId()).append("\n")
+                   .append(" Priority: ").append(priority).append("\n")
+                   .append(" Task: ").append(t.getTaskString()).append("\n")
+                   .append(" Assigned to: ").append(workersString).append("\n")
+                   .append(" Start Date: ").append(t.getStartDate()).append("\n")
+                   .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+                   .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
+                   .append(" Status: ").append(status).append("\n")
+                   .append("-----------------------------------------------------------------\n");
+             }
+ 			}
+ 	   return stb.toString();
+    }
+//========================================================================================
+    public boolean removeTaskById(int id) {
+    	for (Task t : masterTaskList) {
+			if (id == t.getId()) {
+				masterTaskList.remove(t);
+		    	return true;
+			}
+		}
+    	return false;
+    }
 //========================================================================================	
    public Priority PriorityOfTask(Task task) {
        LocalDateTime startDate = dateUtils.parseDateTime(task.getStartDate());
@@ -67,7 +154,7 @@ public class TaskModel{
 		   LocalDateTime endDate = dateUtils.calculateEndDate(task.getStartDate(), task.getDuree());
 		   
 		   TaskStatus status;
-		   if (endDate.isBefore(LocalDateTime.now()) && endDate.isBefore(LocalDateTime.now())) {
+		   if (endDate.isBefore(LocalDateTime.now())) {
 			   status = TaskStatus.Done;
 		   }
 		   else if(startDate.isAfter(LocalDateTime.now())){
@@ -80,89 +167,7 @@ public class TaskModel{
 		   Priority priority = PriorityOfTask(task);
 		   task.setPriority(priority);
    }
- //========================================================================================
-// cancel task Method
-   public String cancelTask(int id) {
-	   StringBuilder stb = new StringBuilder();
-	   for (Task t : masterTaskList) {
-		   TaskStatus status;
-		   Priority priority;
-		   
-			if (id == t.getId()) {
-				status = TaskStatus.Cancelled;
-				priority = Priority.NONE;
-				
-				t.setStatus(status);
-				t.setPriority(priority);
-				
-				String workersString = String.join(", ", t.getAssignedTo());
 
-                stb.append(" ID_task: ").append(t.getId()).append("\n")
-                  .append(" Priority: ").append(priority).append("\n")
-                  .append(" Task: ").append(t.getTaskString()).append("\n")
-                  .append(" Assigned to: ").append(workersString).append("\n")
-                  .append(" Start Date: ").append(t.getStartDate()).append("\n")
-                  .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
-                  .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
-                  .append(" Status: ").append(status).append("\n")
-                  .append("-----------------------------------------------------------------\n");
-            }
-			}
-	   return stb.toString();
-   }
- //========================================================================================
-     public String getTaskById(int id) {	
-    	 StringBuilder stb = new StringBuilder();
-
-    	for(Task t: masterTaskList) {
-               if (id == t.getId()) {
-            	   String workersString = String.join(", ", t.getAssignedTo());
-
-                   stb.append(" ID_task: ").append(t.getId()).append("\n")
-                     .append(" Priority: ").append(t.getPriority()).append("\n")
-                     .append(" Task: ").append(t.getTaskString()).append("\n")
-                     .append(" Assigned to: ").append(workersString).append("\n")
-                     .append(" Start Date: ").append(t.getStartDate()).append("\n")
-                     .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
-                     .append(" End Date: ").append(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree())).append("\n")
-                     .append(" Status: ").append(t.getStatus()).append("\n")
-                     .append("-----------------------------------------------------------------\n");
-               }
-           }
-    	return stb.toString();
-	}
-//========================================================================================
-    public boolean removeTaskById(int id) {
-    	for (Task t : masterTaskList) {
-			if (id == t.getId()) {
-				masterTaskList.remove(t);
-		    	return true;
-			}
-		}
-    	return false;
-    }
-//======================================================================================    
-    public String getTasks() {
-        StringBuilder stb = new StringBuilder();
-
-        for (Task t : masterTaskList) {
-//			ameliorated version of listing people into the list "assignedTo"
-    	    String workersString = String.join(", ", t.getAssignedTo());
-
-            stb.append(" ID_task: ").append(t.getId()).append("\n")
-              .append(" Priority: ").append(t.getPriority()).append("\n")
-              .append(" Task: ").append(t.getTaskString()).append("\n")
-              .append(" Assigned to: ").append(workersString).append("\n")
-              .append(" Start Date: ").append(t.getStartDate()).append("\n")
-              .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
-              .append(" End Date: ").append(dateUtils.formatDateTime(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()))).append("\n")
-              .append(" Status: ").append(t.getStatus()).append("\n")
-              .append("-----------------------------------------------------------------\n");
-            
-        }
-        
-        return stb.toString();
-    }
 //===============================================================================    
     
 } 

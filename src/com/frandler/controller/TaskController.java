@@ -43,15 +43,18 @@ public class TaskController {
 		    }
 		    return tasks;
 	}
+	 
+	 
 
 //---------------------------------------------------------	 
 	 public String getTaskById(int id) {
-		 String task = tskmodel.getTaskById(id);
 		 if (id < 0) {
 			 return " ID (< 0) Invalid !";
 		 }
-		 if (task == "") 
+		 String task = tskmodel.getTaskById(id);
+		 if (task == "" || task.isEmpty()	) 
 		    return " Task "+ id + " not found";
+		 
 		 return task;
 	}
 	 
