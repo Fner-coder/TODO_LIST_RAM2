@@ -36,13 +36,11 @@ public class TaskController {
 //=================================================================================================
 	 public String getTasks() {
 		 String tasks = tskmodel.getTasks();
-		    
 		    if (tasks == "" || tasks.isEmpty()) {
 		        return "No task has been saved!\nChoose (1) in the menu to (+) ADD NEW TASK";
 		    }
 		    return tasks;
 	}
-
 //-----------------------------------------------------------------------------------------------
 	 public String loadTasksFromJson() {
 	        return tskmodel.listTaskLoadedFromJson();
