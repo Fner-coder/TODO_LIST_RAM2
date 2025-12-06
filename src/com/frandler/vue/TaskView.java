@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 import com.frandler.controller.TaskController;
 import com.frandler.dateUtils.DateUtils;
+import com.frandler.tache.Task;
 
 public class TaskView {
 
@@ -114,7 +115,7 @@ public class TaskView {
 	        mscanner.nextLine(); 
 	    }
 	}
-//	2025-11-15 12:30
+//	29-11-2025 12:00
 //-----------------------------------------------------------------------------------------
 	public void removeTaskById() {
 		int idTaskInt = -1;
@@ -152,7 +153,36 @@ public class TaskView {
 		
 	}
 	
-
+	public void loadTasksFromJson() {
+    	System.out.println(tskController.loadTasksFromJson());
+       }
+    
+	
+//	public void loadTaskFromJson() {
+//			ArrayList<Task> tasks = tskController.loadTasksFromJson();
+//			if (tasks.isEmpty()) {
+//				System.out.println("No tasks found!");
+//			}
+//			else {
+//				StringBuilder stb = new StringBuilder();
+//				for(Task t : tasks) {
+//					String workersString = String.join(", ", t.getAssignedTo());
+//
+//		            stb.append(" ID_task: ").append(t.getId()).append("\n")
+//		              .append(" Priority: ").append(t.getPriority()).append("\n")
+//		              .append(" Task: ").append(t.getTaskString()).append("\n")
+//		              .append(" Assigned to: ").append(workersString).append("\n")
+//		              .append(" Start Date: ").append(t.getStartDate()).append("\n")
+//		              .append(" Duration: ").append(dateUtils.formatDuration(t.getDuree())).append("\n")
+//		              .append(" End Date: ").append(dateUtils.formatDateTime(dateUtils.calculateEndDate(t.getStartDate(), t.getDuree()))).append("\n")
+//		              .append(" Status: ").append(t.getStatus()).append("\n")
+//		              .append("-----------------------------------------------------------------\n");
+//		            
+//				}
+//			System.out.println(stb);
+//			}
+//	        
+//	}
 //-----------------------------------------------------------------------------------------	
 	public void getMenu() {
 		
@@ -179,7 +209,7 @@ public class TaskView {
                           break;
                       case 2:
                     	  try {
-//                              getTasks();
+                    		  loadTasksFromJson();
                           } catch (Exception e) {
                               System.err.println("Error while listing tasks: " + e.getMessage());
                           }

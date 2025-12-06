@@ -3,6 +3,7 @@ package com.frandler.controller;
 import java.util.ArrayList;
 
 import com.frandler.model.TaskModel;
+import com.frandler.tache.Task;
 
 public class TaskController {
 	
@@ -23,18 +24,16 @@ public class TaskController {
 			if (completeNameArrayList.isEmpty()) {
 				return "Error ! No worker(s) assigned to this task....Try again";
 			}
-//			================================================
 		    for (String name : completeNameArrayList) {
 		        if (name == null || name.trim().isEmpty()) {
 		            return "Error ! All workers must have a complete name....Try again";
 		        }
 		    }
-//			================================================
 	        tskmodel.addTask(completeNameArrayList, task, duration, startAt);
 	        return errorString;
 	        
 	    }
-
+//=================================================================================================
 	 public String getTasks() {
 		 String tasks = tskmodel.getTasks();
 		    
@@ -43,9 +42,15 @@ public class TaskController {
 		    }
 		    return tasks;
 	}
-	 
-	 
 
+//-----------------------------------------------------------------------------------------------
+	 public String loadTasksFromJson() {
+	        return tskmodel.listTaskLoadedFromJson();
+	 }
+	 
+	 public ArrayList<Task> getAllTasks() {
+	        return tskmodel.getMasterTaskList();
+	    }
 //---------------------------------------------------------	 
 	 public String getTaskById(int id) {
 		 if (id < 0) {
@@ -81,20 +86,6 @@ public class TaskController {
 			}
 		return errorString;
 	}
-	 
-//	 public String isValidDate(String tmpDate) {
-//		 boolean isValidate = tskmodel.isValidDate(tmpDate);
-//		 while (!isValidate) {
-//			 return "Date format invalid!";
-//		 }
-//		 return tmpDate;
-//		 if (isValidate) {
-//			return tmpDate;
-//		}
-//		 else {
-//			return "Date format invalid!";
-//		}
-//	 }
 
 }
 

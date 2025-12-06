@@ -1,4 +1,5 @@
 package com.frandler.tache;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Task {
@@ -25,6 +26,8 @@ public class Task {
 	private String startDate;
 	private TaskStatus status;
 	private Priority priority;
+	private LocalDateTime endDate;
+	
 
 	public Priority getPriority() {
 		return priority;
@@ -86,16 +89,25 @@ public class Task {
 		this.startDate = startDate;
 	}
 	
+	public LocalDateTime getEndDate() {
+		return endDate;
+	}
+	
+	public void setEndDate(LocalDateTime endDate) {
+		this.endDate = endDate ;
+	}
+	
 	public Task() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public Task(int id, ArrayList<String> assignedTo , String taskString, int duration, String startAt){
+	public Task(int id, ArrayList<String> assignedTo , String taskString, int duration, String startAt, LocalDateTime enDate){
 		this.id = id;
 		this.assignedTo = assignedTo;
 		this.taskString = taskString;
 		this.duration = duration;
 		this.startDate = startAt;
+		this.endDate = enDate;
 	}
 
 
